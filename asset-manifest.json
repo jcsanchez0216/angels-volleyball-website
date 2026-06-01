@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/angels-volleyball-website/static/css/main.2859e714.css",
+    "main.js": "/angels-volleyball-website/static/js/main.7aff7d59.js",
+    "index.html": "/angels-volleyball-website/index.html",
+    "main.2859e714.css.map": "/angels-volleyball-website/static/css/main.2859e714.css.map",
+    "main.7aff7d59.js.map": "/angels-volleyball-website/static/js/main.7aff7d59.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2859e714.css",
+    "static/js/main.7aff7d59.js"
+  ]
+}
