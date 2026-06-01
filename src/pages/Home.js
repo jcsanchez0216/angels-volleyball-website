@@ -54,7 +54,7 @@ export default function Home() {
             ].map((item, i) => {
               const Icon = item.icon;
               return (
-                <div key={i} style={{backgroundColor: '#f9fafb', padding: '32px', borderRadius: '12px', border: '1px solid #e5e7eb'}}>
+                <div key={i} style={{backgroundColor: '#111111', padding: '32px', borderRadius: '12px', border: '1px solid #e5e7eb'}}>
                   <Icon style={{width: '48px', height: '48px', color: '#dc2626', marginBottom: '16px'}} />
                   <h3 style={{fontSize: '24px', fontWeight: 'bold', color: '#111827', marginBottom: '12px'}}>{item.title}</h3>
                   <p style={{color: '#4b5563', lineHeight: '1.6'}}>{item.desc}</p>

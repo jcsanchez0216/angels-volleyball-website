@@ -30,7 +30,7 @@ export default function Tryouts() {
               </div>
             </div>
 
-            <div style={{backgroundColor: '#f9fafb', padding: '40px', borderRadius: '12px', border: '2px solid #dc2626'}}>
+            <div style={{backgroundColor: '#111111', padding: '40px', borderRadius: '12px', border: '2px solid #dc2626'}}>
               <h3 style={{fontSize: '28px', fontWeight: 'bold', color: '#111827', marginBottom: '24px'}}>Tryout Details</h3>
               <div style={{space: '16px'}}>
                 <div style={{marginBottom: '20px', paddingBottom: '20px', borderBottom: '1px solid #e5e7eb'}}>
@@ -57,7 +57,7 @@ export default function Tryouts() {
         </div>
       </section>
 
-      <section style={{paddingTop: '96px', paddingBottom: '96px', padding: '96px 24px', backgroundColor: '#f9fafb'}}>
+      <section style={{paddingTop: '96px', paddingBottom: '96px', padding: '96px 24px', backgroundColor: '#111111'}}>
         <div style={{maxWidth: '80rem', margin: '0 auto'}}>
           <h2 style={{fontSize: '36px', fontWeight: 'bold', color: '#111827', marginBottom: '16px', textAlign: 'center'}}>Choose Your Program</h2>
           <div style={{height: '4px', background: '#dc2626', width: '80px', margin: '0 auto 64px'}}></div>

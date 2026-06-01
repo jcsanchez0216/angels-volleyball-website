@@ -4,7 +4,7 @@ import { Mail, Phone, Instagram } from 'lucide-react';
 export default function Contact() {
   return (
     <div style={{paddingTop: '80px', backgroundColor: '#1a1a1a'}}>
-      <section style={{paddingTop: '96px', paddingBottom: '64px', padding: '96px 24px 64px 24px', backgroundColor: '#f9fafb'}}>
+      <section style={{paddingTop: '96px', paddingBottom: '64px', padding: '96px 24px 64px 24px', backgroundColor: '#111111'}}>
         <div style={{maxWidth: '80rem', margin: '0 auto', textAlign: 'center'}}>
           <h1 style={{fontSize: '48px', fontWeight: 'bold', color: '#111827', marginBottom: '16px'}}>Get in Touch</h1>
           <div style={{height: '4px', background: '#dc2626', width: '80px', margin: '0 auto 32px'}}></div>
@@ -34,7 +34,7 @@ export default function Contact() {
             })}
           </div>
 
-          <div style={{backgroundColor: '#f9fafb', borderRadius: '12px', padding: '48px', border: '1px solid #e5e7eb'}}>
+          <div style={{backgroundColor: '#111111', borderRadius: '12px', padding: '48px', border: '1px solid #e5e7eb'}}>
             <h2 style={{fontSize: '32px', fontWeight: 'bold', color: '#111827', marginBottom: '32px', textAlign: 'center'}}>Our Leadership</h2>
             <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '32px'}}>
               {[
@@ -56,7 +56,7 @@ export default function Contact() {
         </div>
       </section>
 
-      <section style={{paddingTop: '96px', paddingBottom: '96px', padding: '96px 24px', backgroundColor: '#f9fafb'}}>
+      <section style={{paddingTop: '96px', paddingBottom: '96px', padding: '96px 24px', backgroundColor: '#111111'}}>
         <div style={{maxWidth: '64rem', margin: '0 auto', textAlign: 'center'}}>
           <h2 style={{fontSize: '32px', fontWeight: 'bold', color: '#111827', marginBottom: '32px'}}>Mailing Address</h2>
           <div style={{backgroundColor: '#1a1a1a', padding: '32px', borderRadius: '12px', border: '1px solid #e5e7eb'}}>

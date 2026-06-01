@@ -13,7 +13,7 @@ export default function Coaches() {
 
   return (
     <div style={{paddingTop: '80px', backgroundColor: '#1a1a1a'}}>
-      <section style={{paddingTop: '96px', paddingBottom: '64px', padding: '96px 24px 64px 24px', backgroundColor: '#f9fafb'}}>
+      <section style={{paddingTop: '96px', paddingBottom: '64px', padding: '96px 24px 64px 24px', backgroundColor: '#111111'}}>
         <div style={{maxWidth: '80rem', margin: '0 auto'}}>
           <h1 style={{fontSize: '48px', fontWeight: 'bold', color: '#111827', marginBottom: '16px'}}>Our Coaching Staff</h1>
           <div style={{height: '4px', background: '#dc2626', width: '80px', marginBottom: '32px'}}></div>
