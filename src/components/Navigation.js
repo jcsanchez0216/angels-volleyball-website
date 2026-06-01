@@ -10,7 +10,7 @@ export default function Navigation() {
       <div style={{maxWidth: '80rem', margin: '0 auto', padding: '0 1.5rem'}}>
         <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '80px'}}>
           <Link to="/" style={{display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none'}}>
-            <img src="/ANGELS OF ALB BOWTIE TEXT LOGO.jpg" alt="Angels of Albuquerque" style={{height: '60px', width: 'auto'}} />
+            <img src="/angels-logo.jpg" alt="Angels of Albuquerque" style={{height: '60px', width: 'auto'}} />
           </Link>
 
           <div style={{display: 'flex', gap: '32px', alignItems: 'center'}}>
