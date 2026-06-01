@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Tryouts() {
   return (
-    <div style={{paddingTop: '80px', backgroundColor: '#ffffff'}}>
+    <div style={{paddingTop: '80px', backgroundColor: '#1a1a1a'}}>
       <section style={{paddingTop: '96px', paddingBottom: '64px', padding: '96px 24px 64px 24px', background: 'linear-gradient(90deg, #b91c1c, #7f1d1d)', color: '#ffffff'}}>
         <div style={{maxWidth: '80rem', margin: '0 auto', textAlign: 'center'}}>
           <h1 style={{fontSize: '48px', fontWeight: 'bold', marginBottom: '24px'}}>2026 Tryouts</h1>
@@ -10,7 +10,7 @@ export default function Tryouts() {
         </div>
       </section>
 
-      <section style={{paddingTop: '96px', paddingBottom: '96px', padding: '96px 24px', backgroundColor: '#ffffff'}}>
+      <section style={{paddingTop: '96px', paddingBottom: '96px', padding: '96px 24px', backgroundColor: '#1a1a1a'}}>
         <div style={{maxWidth: '80rem', margin: '0 auto'}}>
           <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'center'}}>
             <div>
@@ -67,7 +67,7 @@ export default function Tryouts() {
               { name: 'Hybrid', price: '$2,700/season', desc: 'Competitive & flexible' },
               { name: 'Club', price: 'Contact us', desc: 'Elite & intensive' }
             ].map((prog, i) => (
-              <div key={i} style={{backgroundColor: '#ffffff', padding: '24px', borderRadius: '12px', border: '1px solid #e5e7eb', textAlign: 'center'}}>
+              <div key={i} style={{backgroundColor: '#1a1a1a', padding: '24px', borderRadius: '12px', border: '1px solid #e5e7eb', textAlign: 'center'}}>
                 <h3 style={{fontSize: '20px', fontWeight: 'bold', color: '#111827', marginBottom: '12px'}}>{prog.name}</h3>
                 <p style={{fontSize: '18px', fontWeight: 'bold', color: '#dc2626', marginBottom: '8px'}}>{prog.price}</p>
                 <p style={{color: '#4b5563', fontSize: '14px'}}>{prog.desc}</p>
@@ -81,7 +81,7 @@ export default function Tryouts() {
         <div style={{maxWidth: '64rem', margin: '0 auto'}}>
           <h2 style={{fontSize: '42px', fontWeight: 'bold', marginBottom: '24px'}}>Ready to Tryout?</h2>
           <p style={{fontSize: '18px', lineHeight: '1.6', marginBottom: '32px', color: '#fee2e2'}}>Join a club known for developing elite athletes and building champions. Contact us with questions or to register.</p>
-          <button style={{backgroundColor: '#ffffff', color: '#b91c1c', padding: '16px 48px', fontWeight: 'bold', borderRadius: '8px', border: 'none', cursor: 'pointer', fontSize: '16px'}}>Contact Us</button>
+          <button style={{backgroundColor: '#1a1a1a', color: '#b91c1c', padding: '16px 48px', fontWeight: 'bold', borderRadius: '8px', border: 'none', cursor: 'pointer', fontSize: '16px'}}>Contact Us</button>
         </div>
       </section>
     </div>

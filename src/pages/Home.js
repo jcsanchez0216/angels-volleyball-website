@@ -39,7 +39,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section style={{paddingTop: '96px', paddingBottom: '96px', padding: '96px 24px', backgroundColor: '#ffffff'}}>
+      <section style={{paddingTop: '96px', paddingBottom: '96px', padding: '96px 24px', backgroundColor: '#1a1a1a'}}>
         <div style={{maxWidth: '80rem', margin: '0 auto'}}>
           <div style={{marginBottom: '64px'}}>
             <h2 style={{fontSize: '48px', fontWeight: 'bold', color: '#111827', marginBottom: '16px'}}>Why Angels?</h2>

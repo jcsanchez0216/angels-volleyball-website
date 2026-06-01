@@ -3,7 +3,7 @@ import { Mail, Phone, Instagram } from 'lucide-react';
 
 export default function Contact() {
   return (
-    <div style={{paddingTop: '80px', backgroundColor: '#ffffff'}}>
+    <div style={{paddingTop: '80px', backgroundColor: '#1a1a1a'}}>
       <section style={{paddingTop: '96px', paddingBottom: '64px', padding: '96px 24px 64px 24px', backgroundColor: '#f9fafb'}}>
         <div style={{maxWidth: '80rem', margin: '0 auto', textAlign: 'center'}}>
           <h1 style={{fontSize: '48px', fontWeight: 'bold', color: '#111827', marginBottom: '16px'}}>Get in Touch</h1>
@@ -12,7 +12,7 @@ export default function Contact() {
         </div>
       </section>
 
-      <section style={{paddingTop: '96px', paddingBottom: '96px', padding: '96px 24px', backgroundColor: '#ffffff'}}>
+      <section style={{paddingTop: '96px', paddingBottom: '96px', padding: '96px 24px', backgroundColor: '#1a1a1a'}}>
         <div style={{maxWidth: '80rem', margin: '0 auto'}}>
           <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '48px', marginBottom: '96px'}}>
             {[
@@ -42,7 +42,7 @@ export default function Contact() {
                 { name: 'Theresa Sanchez', title: 'Founder & Associate Director', email: 'Theresa@angelsofalbuquerque.com' },
                 { name: 'Lucy Mora', title: 'Treasurer', email: 'Lucy@angelsofalbuquerque.com' }
               ].map((person, i) => (
-                <div key={i} style={{backgroundColor: '#ffffff', padding: '24px', borderRadius: '12px', border: '1px solid #e5e7eb'}}>
+                <div key={i} style={{backgroundColor: '#1a1a1a', padding: '24px', borderRadius: '12px', border: '1px solid #e5e7eb'}}>
                   <div style={{width: '56px', height: '56px', background: '#dc2626', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontWeight: 'bold', fontSize: '24px', marginBottom: '16px'}}>
                     {person.name.charAt(0)}
                   </div>
@@ -59,7 +59,7 @@ export default function Contact() {
       <section style={{paddingTop: '96px', paddingBottom: '96px', padding: '96px 24px', backgroundColor: '#f9fafb'}}>
         <div style={{maxWidth: '64rem', margin: '0 auto', textAlign: 'center'}}>
           <h2 style={{fontSize: '32px', fontWeight: 'bold', color: '#111827', marginBottom: '32px'}}>Mailing Address</h2>
-          <div style={{backgroundColor: '#ffffff', padding: '32px', borderRadius: '12px', border: '1px solid #e5e7eb'}}>
+          <div style={{backgroundColor: '#1a1a1a', padding: '32px', borderRadius: '12px', border: '1px solid #e5e7eb'}}>
             <p style={{fontSize: '16px', color: '#111827', lineHeight: '1.8', fontWeight: '500'}}>
               Angels of Albuquerque Volleyball Club<br/>
               PO Box 67171<br/>
@@ -73,7 +73,7 @@ export default function Contact() {
         <div style={{maxWidth: '64rem', margin: '0 auto', textAlign: 'center'}}>
           <h2 style={{fontSize: '42px', fontWeight: 'bold', marginBottom: '24px'}}>Questions?</h2>
           <p style={{fontSize: '18px', lineHeight: '1.6', marginBottom: '32px', color: '#fee2e2'}}>We're here to help! Contact us with any questions about our programs, tryouts, or anything else.</p>
-          <button style={{backgroundColor: '#ffffff', color: '#b91c1c', padding: '16px 48px', fontWeight: 'bold', borderRadius: '8px', border: 'none', cursor: 'pointer', fontSize: '16px'}}>Send us a Message</button>
+          <button style={{backgroundColor: '#1a1a1a', color: '#b91c1c', padding: '16px 48px', fontWeight: 'bold', borderRadius: '8px', border: 'none', cursor: 'pointer', fontSize: '16px'}}>Send us a Message</button>
         </div>
       </section>
     </div>

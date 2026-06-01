@@ -12,7 +12,7 @@ export default function Coaches() {
   ];
 
   return (
-    <div style={{paddingTop: '80px', backgroundColor: '#ffffff'}}>
+    <div style={{paddingTop: '80px', backgroundColor: '#1a1a1a'}}>
       <section style={{paddingTop: '96px', paddingBottom: '64px', padding: '96px 24px 64px 24px', backgroundColor: '#f9fafb'}}>
         <div style={{maxWidth: '80rem', margin: '0 auto'}}>
           <h1 style={{fontSize: '48px', fontWeight: 'bold', color: '#111827', marginBottom: '16px'}}>Our Coaching Staff</h1>
@@ -21,7 +21,7 @@ export default function Coaches() {
         </div>
       </section>
 
-      <section style={{paddingTop: '64px', paddingBottom: '96px', padding: '64px 24px 96px 24px', backgroundColor: '#ffffff'}}>
+      <section style={{paddingTop: '64px', paddingBottom: '96px', padding: '64px 24px 96px 24px', backgroundColor: '#1a1a1a'}}>
         <div style={{maxWidth: '80rem', margin: '0 auto'}}>
           <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px'}}>
             {coaches.map((coach, i) => (
@@ -31,7 +31,7 @@ export default function Coaches() {
                 </div>
                 <h3 style={{fontSize: '20px', fontWeight: 'bold', color: '#111827'}}>{coach.name}</h3>
                 <p style={{fontSize: '14px', fontWeight: '600', color: '#dc2626', marginTop: '6px'}}>{coach.title}</p>
-                {coach.level && <p style={{fontSize: '11px', fontWeight: 'bold', color: '#6b7280', textTransform: 'uppercase', marginTop: '12px', display: 'inline-block', backgroundColor: '#ffffff', padding: '6px 10px', borderRadius: '4px', letterSpacing: '0.03em'}}>{coach.level}</p>}
+                {coach.level && <p style={{fontSize: '11px', fontWeight: 'bold', color: '#6b7280', textTransform: 'uppercase', marginTop: '12px', display: 'inline-block', backgroundColor: '#1a1a1a', padding: '6px 10px', borderRadius: '4px', letterSpacing: '0.03em'}}>{coach.level}</p>}
                 <p style={{color: '#4b5563', fontSize: '14px', lineHeight: '1.6', marginTop: '16px'}}>{coach.bio}</p>
               </div>
             ))}

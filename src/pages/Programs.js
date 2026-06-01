@@ -8,7 +8,7 @@ export default function Programs() {
   ];
 
   return (
-    <div style={{paddingTop: '80px', backgroundColor: '#ffffff'}}>
+    <div style={{paddingTop: '80px', backgroundColor: '#1a1a1a'}}>
       <section style={{paddingTop: '96px', paddingBottom: '64px', padding: '96px 24px 64px 24px', backgroundColor: '#f9fafb'}}>
         <div style={{maxWidth: '80rem', margin: '0 auto'}}>
           <h1 style={{fontSize: '48px', fontWeight: 'bold', color: '#111827', marginBottom: '16px'}}>Our Programs</h1>
@@ -17,11 +17,11 @@ export default function Programs() {
         </div>
       </section>
 
-      <section style={{paddingTop: '64px', paddingBottom: '96px', padding: '64px 24px 96px 24px', backgroundColor: '#ffffff'}}>
+      <section style={{paddingTop: '64px', paddingBottom: '96px', padding: '64px 24px 96px 24px', backgroundColor: '#1a1a1a'}}>
         <div style={{maxWidth: '80rem', margin: '0 auto'}}>
           <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px'}}>
             {programs.map((prog, i) => (
-              <div key={i} style={{backgroundColor: '#ffffff', borderRadius: '12px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', border: '1px solid #e5e7eb', overflow: 'hidden', transition: 'transform 0.3s', cursor: 'pointer'}} onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-4px)'} onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+              <div key={i} style={{backgroundColor: '#1a1a1a', borderRadius: '12px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', border: '1px solid #e5e7eb', overflow: 'hidden', transition: 'transform 0.3s', cursor: 'pointer'}} onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-4px)'} onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
                 <div style={{background: 'linear-gradient(90deg, #dc2626, #b91c1c)', padding: '32px', color: '#ffffff'}}>
                   <h2 style={{fontSize: '32px', fontWeight: 'bold', marginBottom: '12px'}}>{prog.name}</h2>
                   <div style={{fontSize: '36px', fontWeight: 'bold'}}>{prog.price}</div>
@@ -50,7 +50,7 @@ export default function Programs() {
               { title: 'Leadership Training', desc: 'Develop life skills beyond volleyball' },
               { title: 'College Prep', desc: 'Resources and coaching to prepare for college recruitment' }
             ].map((item, i) => (
-              <div key={i} style={{backgroundColor: '#ffffff', padding: '24px', borderRadius: '12px', border: '1px solid #e5e7eb'}}>
+              <div key={i} style={{backgroundColor: '#1a1a1a', padding: '24px', borderRadius: '12px', border: '1px solid #e5e7eb'}}>
                 <h3 style={{fontSize: '18px', fontWeight: 'bold', color: '#111827', marginBottom: '12px'}}>{item.title}</h3>
                 <p style={{color: '#4b5563', fontSize: '14px', lineHeight: '1.6'}}>{item.desc}</p>
               </div>
