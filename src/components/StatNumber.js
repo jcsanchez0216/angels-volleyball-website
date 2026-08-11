@@ -18,16 +18,18 @@ export default function StatNumber({ value, active }) {
 
     const duration = 1200;
     const start = performance.now();
+    let frameId;
 
     function tick(now) {
       const progress = Math.min((now - start) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
       setDisplay(Math.round(eased * target));
-      if (progress < 1) requestAnimationFrame(tick);
+      if (progress < 1) frameId = requestAnimationFrame(tick);
     }
 
-    requestAnimationFrame(tick);
-  }, [active, match]);
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
+  }, [active, value]);
 
   if (!match) return <>{value}</>;
   return <>{display}{match[2]}</>;

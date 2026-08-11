@@ -65,6 +65,7 @@ export default function Home() {
               <div
                 key={i}
                 className={`card-cut bg-white/10 backdrop-blur p-6 reveal ${statsVisible ? 'is-visible' : ''}`}
+                aria-label={`${stat.num} ${stat.label}`}
               >
                 <div className="text-5xl font-bold mb-2">
                   {stat.num === '✓' ? (

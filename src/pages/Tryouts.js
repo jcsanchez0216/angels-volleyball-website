@@ -15,6 +15,7 @@ const programSummary = [
 ];
 
 export default function Tryouts() {
+  const [headRef, headVisible] = useScrollReveal();
   const [detailsRef, detailsVisible] = useScrollReveal();
   const [summaryRef, summaryVisible] = useScrollReveal();
   const [ctaRef, ctaVisible] = useScrollReveal();
@@ -22,7 +23,7 @@ export default function Tryouts() {
   return (
     <div className="pt-20 bg-paper">
       <section className="relative pt-24 pb-20 px-6 bg-ink text-center">
-        <div className="max-w-7xl mx-auto">
+        <div ref={headRef} className={`max-w-7xl mx-auto reveal ${headVisible ? 'is-visible' : ''}`}>
           <h1 className="font-display text-5xl font-bold text-white mb-6 uppercase tracking-tight">2026 Tryouts</h1>
           <p className="text-xl text-white/80 max-w-2xl mx-auto leading-relaxed">
             Are you ready to join the Angels family? Tryouts are coming soon. Limited spots available for all age groups and program levels.
@@ -31,7 +32,7 @@ export default function Tryouts() {
         <div className="divider-cut bg-paper" aria-hidden="true" />
       </section>
 
-      <section className="py-24 px-6 bg-paper">
+      <section className="relative py-24 px-6 bg-paper">
         <div ref={detailsRef} className={`max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center reveal ${detailsVisible ? 'is-visible' : ''}`}>
           <div>
             <h2 className="font-display text-4xl font-bold text-ink mb-6 uppercase tracking-tight">What to Expect</h2>
@@ -71,6 +72,7 @@ export default function Tryouts() {
             <p className="text-ink/70 text-xs text-center mt-3">Limited spots available</p>
           </div>
         </div>
+        <div className="divider-cut bg-taupe-light" aria-hidden="true" />
       </section>
 
       <section className="relative py-24 px-6 bg-taupe-light">
