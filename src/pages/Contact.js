@@ -81,7 +81,7 @@ export default function Contact() {
           <p className="text-lg text-white/80 leading-relaxed mb-8">
             We're here to help! Contact us with any questions about our programs, tryouts, or anything else.
           </p>
-          <button className="bg-maroon hover:bg-maroon-light text-white font-bold px-12 py-4 rounded-lg transition-colors">
+          <button className="bg-maroon hover:bg-maroon-light text-white hover:text-ink font-bold px-12 py-4 rounded-lg transition-colors">
             Send us a Message
           </button>
         </div>

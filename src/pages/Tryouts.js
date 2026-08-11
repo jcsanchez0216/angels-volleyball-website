@@ -89,7 +89,7 @@ export default function Tryouts() {
           <p className="text-lg text-white/80 leading-relaxed mb-8">
             Join a club known for developing elite athletes and building champions. Contact us with questions or to register.
           </p>
-          <button className="bg-maroon hover:bg-maroon-light text-white font-bold px-12 py-4 rounded-lg transition-colors">
+          <button className="bg-maroon hover:bg-maroon-light text-white hover:text-ink font-bold px-12 py-4 rounded-lg transition-colors">
             Contact Us
           </button>
         </div>

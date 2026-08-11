@@ -39,7 +39,7 @@ export default function Home() {
             <div className="flex gap-4 flex-wrap">
               <button
                 onClick={() => navigate('/tryouts')}
-                className="bg-maroon hover:bg-maroon-light text-white font-bold px-8 py-3 rounded-lg shadow-lg transition-colors"
+                className="bg-maroon hover:bg-maroon-light text-white hover:text-ink font-bold px-8 py-3 rounded-lg shadow-lg transition-colors"
               >
                 2026 Tryouts
               </button>
