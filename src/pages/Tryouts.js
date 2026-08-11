@@ -62,7 +62,7 @@ export default function Tryouts() {
             <button className="w-full bg-maroon hover:bg-maroon-dark text-white font-bold py-4 rounded-lg mt-8 transition-colors">
               Register Interest
             </button>
-            <p className="text-ink/60 text-xs text-center mt-3">Limited spots available</p>
+            <p className="text-ink/70 text-xs text-center mt-3">Limited spots available</p>
           </div>
         </div>
       </section>
@@ -89,7 +89,7 @@ export default function Tryouts() {
           <p className="text-lg text-white/80 leading-relaxed mb-8">
             Join a club known for developing elite athletes and building champions. Contact us with questions or to register.
           </p>
-          <button className="bg-maroon hover:bg-maroon-dark text-white font-bold px-12 py-4 rounded-lg transition-colors">
+          <button className="bg-maroon hover:bg-maroon-light text-white font-bold px-12 py-4 rounded-lg transition-colors">
             Contact Us
           </button>
         </div>

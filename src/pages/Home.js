@@ -26,18 +26,20 @@ export default function Home() {
           alt=""
           aria-hidden="true"
           className="pointer-events-none select-none absolute -right-24 -top-16 w-[560px] max-w-none opacity-10"
+          width="560"
+          height="342"
         />
         <div className="relative max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
             <h1 className="font-display text-6xl font-bold text-white tracking-tight mb-2 uppercase">Angels</h1>
-            <div className="h-1.5 w-32 bg-maroon mb-6" />
+            <div className="h-1.5 w-32 bg-maroon-light mb-6" />
             <p className="text-xl text-white/90 mb-8 max-w-md leading-relaxed font-medium">
               Developing elite athletes. Building champions. Albuquerque's trusted volleyball program since 2010.
             </p>
             <div className="flex gap-4 flex-wrap">
               <button
                 onClick={() => navigate('/tryouts')}
-                className="bg-maroon hover:bg-maroon-dark text-white font-bold px-8 py-3 rounded-lg shadow-lg transition-colors"
+                className="bg-maroon hover:bg-maroon-light text-white font-bold px-8 py-3 rounded-lg shadow-lg transition-colors"
               >
                 2026 Tryouts
               </button>

@@ -34,12 +34,12 @@ export default function Programs() {
             <div key={i} className="bg-white border border-taupe-light rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-1 transition">
               <div className="bg-maroon px-8 py-8 text-white">
                 <h2 className="font-display text-3xl font-bold uppercase">{prog.name}</h2>
-                <div className="text-4xl font-bold mt-2">{prog.price}</div>
+                <div className="text-3xl md:text-4xl font-bold mt-2">{prog.price}</div>
                 <p className="text-xs font-bold text-white/80 uppercase tracking-wider mt-3">{prog.age}</p>
               </div>
               <div className="p-8">
                 <p className="text-ink/80 leading-relaxed mb-4 font-medium">{prog.description}</p>
-                <p className="text-ink/60 text-sm leading-relaxed">{prog.details}</p>
+                <p className="text-ink/70 text-sm leading-relaxed">{prog.details}</p>
               </div>
             </div>
           ))}

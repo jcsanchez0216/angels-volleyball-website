@@ -7,6 +7,7 @@ module.exports = {
         maroon: {
           DEFAULT: '#6E1B2D',
           dark: '#4E1220',
+          light: '#D98499',
         },
         ink: '#222425',
         paper: '#FFFFFF',

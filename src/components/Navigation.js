@@ -15,11 +15,11 @@ export default function Navigation() {
   const location = useLocation();
 
   return (
-    <nav className="fixed w-full bg-ink z-50 shadow-lg border-b-2 border-maroon">
+    <nav className="fixed w-full bg-ink z-50 shadow-lg border-b-2 border-maroon-light">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex justify-between items-center h-20">
           <Link to="/" className="block" onClick={() => setMobileMenuOpen(false)}>
-            <img src={`${process.env.PUBLIC_URL}/wordmark.png`} alt="Angels of Albuquerque Volleyball" className="h-14 w-auto" />
+            <img src={`${process.env.PUBLIC_URL}/wordmark.png`} alt="Angels of Albuquerque Volleyball" className="h-14 w-auto" width="114" height="56" />
           </Link>
 
           <div className="hidden md:flex gap-8 items-center">
@@ -30,7 +30,7 @@ export default function Navigation() {
                   key={link.to}
                   to={link.to}
                   className={`text-sm font-bold uppercase tracking-wider pb-1 border-b-2 transition-colors ${
-                    active ? 'text-maroon border-maroon' : 'text-white border-transparent hover:text-maroon'
+                    active ? 'text-maroon-light border-maroon-light' : 'text-white border-transparent hover:text-maroon-light'
                   }`}
                 >
                   {link.label}
@@ -43,6 +43,8 @@ export default function Navigation() {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden text-white p-2"
             aria-label="Toggle menu"
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -50,7 +52,7 @@ export default function Navigation() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden bg-ink border-t border-maroon px-6 py-4">
+        <div id="mobile-menu" className="md:hidden bg-ink border-t border-maroon-light px-6 py-4">
           {links.map(link => (
             <Link
               key={link.to}

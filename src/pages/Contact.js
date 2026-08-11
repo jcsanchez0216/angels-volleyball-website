@@ -38,7 +38,7 @@ export default function Contact() {
                   </div>
                   <h3 className="text-2xl font-bold text-ink mb-3">{item.label}</h3>
                   <p className="text-ink font-bold text-lg mb-2">{item.value}</p>
-                  <p className="text-ink/60 text-sm">{item.action}</p>
+                  <p className="text-ink/70 text-sm">{item.action}</p>
                 </div>
               );
             })}
@@ -54,7 +54,7 @@ export default function Contact() {
                   </div>
                   <h3 className="text-lg font-bold text-ink mb-1">{person.name}</h3>
                   <p className="text-sm font-semibold text-maroon mb-3">{person.title}</p>
-                  <p className="text-[13px] text-ink/60">{person.email}</p>
+                  <p className="text-[13px] text-ink/70">{person.email}</p>
                 </div>
               ))}
             </div>
@@ -81,7 +81,7 @@ export default function Contact() {
           <p className="text-lg text-white/80 leading-relaxed mb-8">
             We're here to help! Contact us with any questions about our programs, tryouts, or anything else.
           </p>
-          <button className="bg-maroon hover:bg-maroon-dark text-white font-bold px-12 py-4 rounded-lg transition-colors">
+          <button className="bg-maroon hover:bg-maroon-light text-white font-bold px-12 py-4 rounded-lg transition-colors">
             Send us a Message
           </button>
         </div>
