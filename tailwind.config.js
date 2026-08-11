@@ -20,6 +20,22 @@ module.exports = {
         display: ['"Barlow Condensed"', 'sans-serif'],
         body: ['Inter', 'system-ui', 'sans-serif'],
       },
+      keyframes: {
+        'sweep-in': {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        'fade-up': {
+          '0%': { opacity: '0', transform: 'translateY(14px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
+      animation: {
+        'sweep-in': 'sweep-in 0.65s cubic-bezier(0.16, 1, 0.3, 1) both',
+        'fade-up': 'fade-up 0.5s ease-out both',
+        'fade-up-1': 'fade-up 0.5s ease-out 0.12s both',
+        'fade-up-2': 'fade-up 0.5s ease-out 0.24s both',
+      },
     },
   },
   plugins: [],
