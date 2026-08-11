@@ -27,7 +27,7 @@ function Footer() {
   return (
     <footer className="bg-ink text-taupe py-12 px-6">
       <div className="max-w-7xl mx-auto border-t border-white/10 pt-8 flex flex-col items-center gap-4 text-center">
-        <img src="/wordmark.png" alt="Angels of Albuquerque Volleyball" className="h-10 w-auto opacity-90" />
+        <img src={`${process.env.PUBLIC_URL}/wordmark.png`} alt="Angels of Albuquerque Volleyball" className="h-10 w-auto opacity-90" />
         <p className="text-sm text-white/70">&copy; 2026 Angels of Albuquerque Volleyball Club. A 501(c)(3) nonprofit organization. All rights reserved.</p>
         <p className="text-xs text-taupe">USAV Sanctioned • Sun Country Region • Albuquerque, New Mexico</p>
       </div>

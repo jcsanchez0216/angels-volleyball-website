@@ -19,7 +19,7 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex justify-between items-center h-20">
           <Link to="/" className="block" onClick={() => setMobileMenuOpen(false)}>
-            <img src="/wordmark.png" alt="Angels of Albuquerque Volleyball" className="h-14 w-auto" />
+            <img src={`${process.env.PUBLIC_URL}/wordmark.png`} alt="Angels of Albuquerque Volleyball" className="h-14 w-auto" />
           </Link>
 
           <div className="hidden md:flex gap-8 items-center">
