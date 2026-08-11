@@ -11,7 +11,6 @@ const contactMethods = [
 const leadership = [
   { name: 'Brian Sanchez', title: 'Founder & Executive Director', email: 'Brian@angelsofalbuquerque.com' },
   { name: 'Theresa Sanchez', title: 'Founder & Associate Director', email: 'Theresa@angelsofalbuquerque.com' },
-  { name: 'Lucy Mora', title: 'Treasurer', email: 'Lucy@angelsofalbuquerque.com' },
 ];
 
 export default function Contact() {
@@ -53,7 +52,7 @@ export default function Contact() {
 
           <div className="bg-taupe-light p-12">
             <h2 className="font-display text-3xl font-bold text-ink mb-8 text-center uppercase tracking-tight">Our Leadership</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
               {leadership.map((person, i) => (
                 <div key={i} className="card-cut bg-white p-6">
                   <div className="w-14 h-14 bg-maroon rounded-full flex items-center justify-center text-white font-bold text-2xl mb-4">
