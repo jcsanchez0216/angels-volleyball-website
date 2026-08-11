@@ -29,6 +29,8 @@ export default function StatNumber({ value, active }) {
 
     frameId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frameId);
+    // match is recomputed from value on every render, so depending on value is equivalent and stable
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, value]);
 
   if (!match) return <>{value}</>;
