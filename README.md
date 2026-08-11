@@ -1,8 +1,6 @@
-# Angels of Albuquerque - Website Updates
+# Angels of Albuquerque - Website
 
-## 📦 What's Inside
-
-This folder contains all the updated files for your multi-page React Router website. 
+A multi-page React Router site for the Angels of Albuquerque Volleyball Club, styled with Tailwind CSS and deployed to GitHub Pages.
 
 ### Structure:
 ```
@@ -15,84 +13,45 @@ src/
 │   └── Contact.js
 ├── components/
 │   └── Navigation.js
-├── App.js (UPDATED)
-└── index.js (UPDATED)
-package.json (UPDATED)
+├── App.js
+└── index.js
+public/
+├── index.html
+├── 404.html       (SPA routing shim for GitHub Pages)
+├── emblem.png
+├── wordmark.png
+└── favicon.ico
 ```
 
-## 🚀 How to Use
+## Local Development
 
-### Step 1: Copy the files into your GitHub repo
-Copy the contents of this folder into your `angels-website-complete/` folder in your local machine.
-
-Replace these files:
-- `src/App.js`
-- `src/index.js`
-- `package.json`
-
-Create these new folders/files:
-- `src/pages/Home.js`
-- `src/pages/Programs.js`
-- `src/pages/Coaches.js`
-- `src/pages/Tryouts.js`
-- `src/pages/Contact.js`
-- `src/components/Navigation.js`
-
-### Step 2: Push to GitHub
 ```bash
-cd angels-volleyball-website/angels-website-complete
-git add .
-git commit -m "Add multi-page React Router architecture with 5 new pages and Navigation component"
-git push
+npm install
+npm start
+```
+Runs the app at `http://localhost:3000`.
+
+## Deployment (GitHub Pages)
+
+This site deploys via the `gh-pages` package to the URL in `package.json`'s `homepage` field:
+`https://jcsanchez0216.github.io/angels-volleyball-website`
+
+```bash
+npm run deploy
 ```
 
-### Step 3: Netlify Auto-Deploys
-Netlify will automatically rebuild your site within 30 seconds. Your site will be LIVE with:
-- ✅ Working navigation between all pages
-- ✅ Home, Programs, Coaches, Tryouts, Contact pages
-- ✅ All buttons functional
-- ✅ Professional styling
+This runs `npm run build` (via the `predeploy` script) and publishes the `build/` folder to the `gh-pages` branch, which GitHub Pages serves.
 
-### Step 4: Update netlify.toml (IMPORTANT)
-Make sure your `netlify.toml` file contains this redirect rule for React Router:
+Because the site lives under a subpath (`/angels-volleyball-website/`) rather than a domain root, `src/App.js` sets `<Router basename={process.env.PUBLIC_URL}>` and `public/404.html` + a small script in `public/index.html` handle deep links and page refreshes (GitHub Pages has no server-side rewrite, so this "SPA on GitHub Pages" shim redirects unknown paths back into the app — see https://github.com/rafgraph/spa-github-pages).
 
-```toml
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-```
-
-This allows direct URL access to pages like `/coaches`, `/programs`, etc.
-
-## 📝 Files Changed/Created
-
-**Updated:**
-- `package.json` - Added `react-router-dom` dependency
-- `src/App.js` - Now uses BrowserRouter and Routes
-- `src/index.js` - Removed StrictMode wrapper
-
-**Created:**
-- `src/components/Navigation.js` - Fixed navigation bar
-- `src/pages/Home.js` - Home landing page
-- `src/pages/Programs.js` - Programs overview
-- `src/pages/Coaches.js` - Coaching staff
-- `src/pages/Tryouts.js` - Tryouts information
-- `src/pages/Contact.js` - Contact & leadership info
-
-## ✨ Features
+## Features
 
 - Multi-page application with React Router v6
-- Fixed navigation bar
-- Professional styling with inline styles (no Tailwind conflicts)
-- Responsive design
-- All pages include hero sections and CTAs
-- Leadership contact cards
-- Program pricing cards
-- Coach bios
+- Fixed navigation bar with mobile menu
+- Tailwind CSS with brand design tokens (maroon/ink/paper/taupe)
+- Responsive design across all pages
+- Leadership contact cards, program pricing cards, coach bios
 
-## 🔗 Site URL
-https://lambent-choux-6e8575.netlify.app/
+## Support
 
-## 📧 Support
-If you have questions, check the inline comments in each file or reach out!
+If you have questions, check the inline comments in each file or reach out to the club's technical contact.
