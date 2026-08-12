@@ -1,8 +1,12 @@
-import React, { useCallback, useState } from 'react';
+import React, { Suspense, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useScrollReveal from '../hooks/useScrollReveal';
 import StatNumber from '../components/StatNumber';
-import EmblemLoader from '../components/EmblemLoader';
+import shouldSkipIntro from '../utils/introSkip';
+
+// Lazy so the ~35KB-gzipped emblem path data is only fetched when the intro
+// actually plays, instead of riding in the main bundle for every route.
+const EmblemLoader = React.lazy(() => import('../components/EmblemLoader'));
 
 const stats = [
   { num: '15+', label: 'Years Strong', sub: 'Proven since 2010' },
@@ -21,12 +25,22 @@ export default function Home() {
   const navigate = useNavigate();
   const [statsRef, statsVisible] = useScrollReveal();
   const [whyRef, whyVisible] = useScrollReveal();
-  const [introDone, setIntroDone] = useState(false);
+  // Decided at render time: repeat / reduced-motion / storage-blocked visits
+  // neither mount the loader nor fetch its chunk, and their hero entrance runs
+  // from the very first frame instead of restarting once the chunk lands.
+  const [skipIntro] = useState(shouldSkipIntro);
+  const [introDone, setIntroDone] = useState(skipIntro);
   const handleIntroComplete = useCallback(() => setIntroDone(true), []);
 
   return (
     <div>
-      <EmblemLoader onComplete={handleIntroComplete} />
+      {!skipIntro && (
+        // The fallback matches the loader's own backdrop so the page is never
+        // briefly visible while the chunk is in flight.
+        <Suspense fallback={<div className="fixed inset-0 z-[100] bg-ink" aria-hidden="true" />}>
+          <EmblemLoader onComplete={handleIntroComplete} />
+        </Suspense>
+      )}
 
       <section className="relative overflow-hidden bg-ink pt-32 pb-24 px-6">
         <img
@@ -68,7 +82,7 @@ export default function Home() {
             {stats.map((stat, i) => (
               <div
                 key={i}
-                className={`card-cut bg-maroon-dark p-6 reveal ${statsVisible ? 'is-visible' : ''}`}
+                className={`card-cut bg-maroon-dark p-6 reveal ${introDone && statsVisible ? 'is-visible' : ''}`}
                 aria-label={`${stat.num} ${stat.label}`}
               >
                 <div className="text-5xl font-bold mb-2">
@@ -76,7 +90,7 @@ export default function Home() {
                     <span className="text-maroon-light">✓</span>
                   ) : (
                     <span className="text-white">
-                      <StatNumber value={stat.num} active={statsVisible} />
+                      <StatNumber value={stat.num} active={introDone && statsVisible} />
                     </span>
                   )}
                 </div>
@@ -106,7 +120,7 @@ export default function Home() {
                   <img
                     src={`${process.env.PUBLIC_URL}/photos/${item.image}`}
                     alt=""
-                    className="w-full h-44 object-cover"
+                    className="w-full h-44 object-cover object-top"
                   />
                   <div className="p-6">
                     <h3 className="font-display text-2xl font-bold text-ink mb-3 uppercase">{item.title}</h3>
@@ -122,7 +136,8 @@ export default function Home() {
       <section className="relative h-64 sm:h-80 md:h-96 overflow-hidden">
         <img
           src={`${process.env.PUBLIC_URL}/photos/home-band.jpg`}
-          alt="Angels players in action"
+          alt=""
+          loading="lazy"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-ink/80" />
