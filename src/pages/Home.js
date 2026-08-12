@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useScrollReveal from '../hooks/useScrollReveal';
 import StatNumber from '../components/StatNumber';
 import shouldSkipIntro from '../utils/introSkip';
+import IntroErrorBoundary from '../components/IntroErrorBoundary';
 
 // Lazy so the ~35KB-gzipped emblem path data is only fetched when the intro
 // actually plays, instead of riding in the main bundle for every route.
@@ -36,10 +37,14 @@ export default function Home() {
     <div>
       {!skipIntro && (
         // The fallback matches the loader's own backdrop so the page is never
-        // briefly visible while the chunk is in flight.
-        <Suspense fallback={<div className="fixed inset-0 z-[100] bg-ink" aria-hidden="true" />}>
-          <EmblemLoader onComplete={handleIntroComplete} />
-        </Suspense>
+        // briefly visible while the chunk is in flight. The boundary covers a
+        // failed chunk fetch (e.g. a stale cached page after a deploy) so a
+        // network error clears the intro instead of unmounting the page.
+        <IntroErrorBoundary onComplete={handleIntroComplete}>
+          <Suspense fallback={<div className="fixed inset-0 z-[100] bg-ink" aria-hidden="true" />}>
+            <EmblemLoader onComplete={handleIntroComplete} />
+          </Suspense>
+        </IntroErrorBoundary>
       )}
 
       <section className="relative overflow-hidden bg-ink pt-32 pb-24 px-6">
