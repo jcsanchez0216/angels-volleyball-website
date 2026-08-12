@@ -72,8 +72,10 @@ export default function EmblemLoader({ onComplete }) {
             ref={pathRef}
             d={EMBLEM_PATH_D}
             fill={phase === 'fill' || phase === 'hide' ? '#6E1B2D' : 'none'}
-            stroke="#6E1B2D"
-            strokeWidth="8"
+            stroke="#D98499"
+            strokeWidth="32"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             style={{ transition: 'fill 0.4s ease-in' }}
           />
         </g>
