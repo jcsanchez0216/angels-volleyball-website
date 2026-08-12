@@ -1,0 +1,556 @@
+# Home Page Ambition Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Give the Home page a real "first impression" moment (an emblem-trace loading animation built from the club's actual vectorized logo), replace its two most generic elements (Lucide icons, a green checkmark) with brand-consistent alternatives, and add real-feeling placeholder photography.
+
+**Architecture:** A one-time asset-generation step produces real SVG path data from the club's emblem PNG (via `potrace`) and cropped/optimized stock photos, committed as static files. A new `EmblemLoader` component plays the trace animation once per browser session (or skips instantly on repeat visits / reduced-motion) and hands off into Home's existing round-2 entrance animations via a callback, coordinated through a small piece of state in `Home.js`. The rest of Home's changes (icon→photo swap, checkmark recolor, stat card treatment, new photo band) are straightforward Tailwind/JSX edits using the existing round-2 design-token system.
+
+**Tech Stack:** React 18, Tailwind CSS v3 (existing), native browser SVG/CSS animation (no new npm dependency), Python 3 + Pillow + `potrace` (Homebrew) for one-time asset generation (same pattern as round 1's logo asset script).
+
+## Global Constraints
+
+- No new npm dependencies.
+- No automated test suite exists in this project (pre-existing, out of scope) — "testing" a step means `npm run build` succeeds and/or real browser verification, not unit tests.
+- Only `src/pages/Home.js` and new supporting files are touched. No other page, `Navigation.js`, or the footer changes.
+- All existing Home page copy (headline, tagline, buttons, all 4 stat labels, all 3 "Why Angels" titles/descriptions) carries over unchanged — this is a shape/imagery/motion pass, not a content change. No new marketing copy is invented (the new photo band is image-only, no new headline text).
+- Brand tokens already exist and must not change: `maroon` (`#6E1B2D`), `maroon.dark` (`#4E1220`), `maroon.light` (`#D98499`), `ink` (`#222425`), `paper` (`#FFFFFF`), `taupe`/`taupe.light`.
+- Existing round-2 CSS classes/hooks must be reused, not duplicated: `.card-cut`, `.divider-cut`, `.rule-cut`, `.reveal`/`.is-visible`, `useScrollReveal()`, `animate-sweep-in`, `animate-fade-up`/`-1`/`-2`.
+- Stock photos are downloaded, cropped, and committed as real files under `public/photos/` — never hotlinked to an external URL at runtime.
+- `potrace` must already be installed (`brew install potrace`) before Task 1 — verify with `which potrace`; install it if missing.
+
+---
+
+### Task 1: Generate the vectorized emblem path data
+
+**Files:**
+- Create: `scripts/generate-emblem-path.py`
+- Create (generated output): `src/data/emblemPath.js`
+
+**Interfaces:**
+- Produces: `src/data/emblemPath.js` exporting three string constants — `EMBLEM_VIEWBOX`, `EMBLEM_TRANSFORM`, `EMBLEM_PATH_D` — consumed by Task 3's `EmblemLoader` component.
+
+- [ ] **Step 1: Confirm potrace is installed**
+
+Run: `which potrace`
+Expected: a path is printed. If not found, run `brew install potrace` first.
+
+- [ ] **Step 2: Write the generation script**
+
+```python
+#!/usr/bin/env python3
+"""Vectorize public/emblem.png into real SVG path data for the trace-loader animation.
+Requires potrace (brew install potrace)."""
+import re
+import subprocess
+import os
+from PIL import Image
+
+SRC = "public/emblem.png"
+WORKDIR = "/tmp/emblem-trace"
+NOISE_THRESHOLD = 150  # drop path segments shorter than this many characters (specks)
+
+os.makedirs(WORKDIR, exist_ok=True)
+
+# 1. Build a high-contrast silhouette bitmap from the emblem's alpha channel
+img = Image.open(SRC).convert("RGBA")
+w, h = img.size
+scale = 3
+img = img.resize((w * scale, h * scale), Image.LANCZOS)
+alpha = img.split()[3]
+
+bw = alpha.point(lambda p: 0 if p > 128 else 255, mode='L').convert('1')
+pbm_path = f"{WORKDIR}/silhouette.pbm"
+bw.save(pbm_path)
+
+# 2. Trace it
+svg_path = f"{WORKDIR}/traced.svg"
+subprocess.run(["potrace", pbm_path, "-s", "-o", svg_path, "--tight", "-O", "0.4"], check=True)
+
+# 3. Merge potrace's separate <path> elements into one, dropping noise specks.
+# potrace pretty-prints each d attribute across multiple lines, so raw
+# newlines/extra whitespace must be collapsed before embedding as a single
+# JS string literal (an embedded literal newline is a JS syntax error).
+content = open(svg_path).read()
+raw_paths = re.findall(r'<path d="([^"]+)"/>', content)
+paths = [" ".join(d.split()) for d in raw_paths]
+kept = [d for d in paths if len(d) >= NOISE_THRESHOLD]
+combined_d = " ".join(kept)
+
+viewbox_match = re.search(r'viewBox="([^"]+)"', content)
+transform_match = re.search(r'<g transform="([^"]+)"', content)
+
+# 4. Write the React data module
+out = f"""// Real vectorized path data for the club's wings+volleyball emblem.
+// Generated by scripts/generate-emblem-path.py from public/emblem.png via potrace.
+// Do not hand-edit — regenerate from the source PNG if the logo changes.
+
+export const EMBLEM_VIEWBOX = "{viewbox_match.group(1)}";
+export const EMBLEM_TRANSFORM = "{transform_match.group(1)}";
+export const EMBLEM_PATH_D = "{combined_d}";
+"""
+
+with open("src/data/emblemPath.js", "w") as f:
+    f.write(out)
+
+print(f"Kept {{len(kept)}}/{{len(paths)}} path segments ({{len(combined_d)}} chars)")
+print("Wrote src/data/emblemPath.js")
+```
+
+Save to `scripts/generate-emblem-path.py`.
+
+- [ ] **Step 3: Run it**
+
+```bash
+mkdir -p src/data
+python3 scripts/generate-emblem-path.py
+```
+
+Expected output: `Kept 31/60 path segments (109627 chars)` and `Wrote src/data/emblemPath.js` (these exact numbers are expected — this script has already been run and verified once during design; if your numbers differ significantly, the source `public/emblem.png` may have changed since this plan was written, which is fine, just note it in your report).
+
+- [ ] **Step 4: Verify the generated file is valid**
+
+```bash
+node --input-type=module -e "
+import { EMBLEM_VIEWBOX, EMBLEM_TRANSFORM, EMBLEM_PATH_D } from './src/data/emblemPath.js';
+console.log('viewbox:', EMBLEM_VIEWBOX);
+console.log('transform:', EMBLEM_TRANSFORM);
+console.log('path length:', EMBLEM_PATH_D.length);
+console.log('contains raw newline:', EMBLEM_PATH_D.includes(String.fromCharCode(10)));
+"
+```
+
+Expected: prints the viewbox/transform strings, a path length around 109,627, and `contains raw newline: false`. If `true`, the whitespace-collapsing in Step 2 didn't work — re-check that `paths = [" ".join(d.split()) for d in raw_paths]` line is present exactly as written (this is a real bug that was caught and fixed during design: potrace wraps path data across multiple lines, and skipping this collapse step produces a JS syntax error).
+
+- [ ] **Step 5: Visually confirm the traced emblem is correct**
+
+```bash
+node -e "
+const { EMBLEM_VIEWBOX, EMBLEM_TRANSFORM, EMBLEM_PATH_D } = require('./src/data/emblemPath.js');
+" 2>&1 | grep -q "Cannot use import" && echo "(expected — it's an ES module, ignore this specific error)"
+```
+
+Then create a quick throwaway HTML file to render it (delete after checking):
+
+```bash
+node --input-type=module -e "
+import { EMBLEM_VIEWBOX, EMBLEM_TRANSFORM, EMBLEM_PATH_D } from './src/data/emblemPath.js';
+import fs from 'fs';
+const svg = \`<svg xmlns='http://www.w3.org/2000/svg' width='1000' height='600' viewBox='\${EMBLEM_VIEWBOX}'><g transform='\${EMBLEM_TRANSFORM}' fill='#6E1B2D'><path d='\${EMBLEM_PATH_D}'/></g></svg>\`;
+fs.writeFileSync('/tmp/emblem-check.html', '<body style=\"margin:0;background:white\">' + svg + '</body>');
+"
+open /tmp/emblem-check.html
+```
+
+Visually confirm it shows the complete wings+volleyball emblem, solid maroon fill, no missing chunks or stray artifacts. Close/delete the temp file when done (`rm /tmp/emblem-check.html`).
+
+- [ ] **Step 6: Commit**
+
+```bash
+git add scripts/generate-emblem-path.py src/data/emblemPath.js
+git commit -m "Generate vectorized emblem path data for the loading animation"
+```
+
+---
+
+### Task 2: Generate the placeholder photo assets
+
+**Files:**
+- Create: `scripts/generate-home-photos.py`
+- Create (generated output): `public/photos/why-angels-1.jpg`, `public/photos/why-angels-2.jpg`, `public/photos/why-angels-3.jpg`, `public/photos/home-band.jpg`
+
+**Interfaces:**
+- Produces: 4 JPEG files under `public/photos/`, consumed by Task 4's Home.js changes via `${process.env.PUBLIC_URL}/photos/<name>`.
+
+- [ ] **Step 1: Write the download-and-crop script**
+
+```python
+#!/usr/bin/env python3
+"""Download and crop the two verified free-license stock photos into Home page assets.
+Source photos confirmed under the Unsplash License (free for commercial/noncommercial
+use, no attribution required) — verified visually during design, not just by caption."""
+import subprocess
+import os
+from PIL import Image
+
+WORKDIR = "/tmp/home-photos"
+os.makedirs(WORKDIR, exist_ok=True)
+os.makedirs("public/photos", exist_ok=True)
+
+SOURCES = {
+    "fleming": "https://images.unsplash.com/photo-1547347298-4074fc3086f0?fm=jpg&q=90&w=2400&auto=format&fit=crop",
+    "tilkian": "https://images.unsplash.com/photo-1567781830902-685fb3401f1d?fm=jpg&q=90&w=1800&auto=format&fit=crop",
+}
+
+for name, url in SOURCES.items():
+    dest = f"{WORKDIR}/{name}.jpg"
+    subprocess.run(["curl", "-sL", url, "-o", dest], check=True)
+    size = Image.open(dest).size
+    print(f"downloaded {name}: {size}")
+
+fleming = Image.open(f"{WORKDIR}/fleming.jpg")  # expected 2400x1600
+tilkian = Image.open(f"{WORKDIR}/tilkian.jpg")   # expected 1800x1200
+
+def crop_resize(img, box, size, out_name, quality=78):
+    c = img.crop(box).resize(size, Image.LANCZOS)
+    out_path = f"public/photos/{out_name}"
+    c.save(out_path, quality=quality, optimize=True)
+    kb = os.path.getsize(out_path) / 1024
+    print(f"{out_name}: {c.size} ({kb:.0f}KB)")
+
+# "Expert Coaching" card: Tilkian, player in defensive ready position
+crop_resize(tilkian, (487, 180, 1187, 880), (600, 600), "why-angels-1.jpg")
+
+# "Proven Results" card: Fleming, player #14 mid-celebration
+crop_resize(fleming, (1025, 150, 1825, 950), (600, 600), "why-angels-2.jpg")
+
+# "Better Value" card: Fleming, player #17 blocking at the net (teammates visible)
+crop_resize(fleming, (1500, 200, 2400, 1100), (600, 600), "why-angels-3.jpg")
+
+# Full-width photo band: Fleming, wide crop of the whole scene
+crop_resize(fleming, (0, 280, 2400, 1120), (1600, 560), "home-band.jpg")
+
+print("Done. All 4 photos written to public/photos/")
+```
+
+Save to `scripts/generate-home-photos.py`.
+
+- [ ] **Step 2: Run it**
+
+```bash
+python3 scripts/generate-home-photos.py
+```
+
+Expected: 4 lines confirming each file was written, each roughly 30-115KB.
+
+- [ ] **Step 3: Visually confirm each photo**
+
+```bash
+open public/photos/why-angels-1.jpg public/photos/why-angels-2.jpg public/photos/why-angels-3.jpg public/photos/home-band.jpg
+```
+
+Confirm: `why-angels-1.jpg` shows a player in a defensive ready stance (indoor gym); `why-angels-2.jpg` shows a player celebrating (arm raised, mid-cheer); `why-angels-3.jpg` shows a player blocking at the net with teammates visible; `home-band.jpg` is a wide action shot of the full scene. All 4 should be indoor volleyball — if any looks like beach/sand volleyball, the crop coordinates or source URL are wrong; stop and report rather than proceeding with a mismatched image.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add scripts/generate-home-photos.py public/photos/
+git commit -m "Generate placeholder photo assets for Home page"
+```
+
+---
+
+### Task 3: Build the EmblemLoader component
+
+**Files:**
+- Create: `src/components/EmblemLoader.js`
+
+**Interfaces:**
+- Consumes: `EMBLEM_PATH_D`, `EMBLEM_VIEWBOX`, `EMBLEM_TRANSFORM` from `../data/emblemPath` (Task 1).
+- Produces: `<EmblemLoader onComplete={fn} />` default export, consumed by Task 4's `Home.js`. `onComplete` is called exactly once: immediately (synchronously within an effect) if `prefers-reduced-motion` is set or the intro already played this session, otherwise at the moment the trace/fill sequence begins fading out (~2.5s in), so the caller can start its own entrance animation at exactly that moment for a seamless hand-off.
+
+- [ ] **Step 1: Create `src/components/EmblemLoader.js`**
+
+```jsx
+import React, { useEffect, useRef, useState } from 'react';
+import { EMBLEM_PATH_D, EMBLEM_VIEWBOX, EMBLEM_TRANSFORM } from '../data/emblemPath';
+
+const SESSION_KEY = 'angels-intro-played';
+const TRACE_MS = 1800;
+const FILL_MS = 400;
+const HOLD_MS = 300;
+const FADE_MS = 500;
+
+export default function EmblemLoader({ onComplete }) {
+  const pathRef = useRef(null);
+  const [phase, setPhase] = useState('trace');
+  const [skip, setSkip] = useState(false);
+  const calledRef = useRef(false);
+
+  useEffect(() => {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const alreadyPlayed = sessionStorage.getItem(SESSION_KEY);
+
+    if (prefersReduced || alreadyPlayed) {
+      setSkip(true);
+      if (!calledRef.current) {
+        calledRef.current = true;
+        onComplete();
+      }
+      return;
+    }
+
+    sessionStorage.setItem(SESSION_KEY, '1');
+
+    const path = pathRef.current;
+    const length = path.getTotalLength();
+    path.style.strokeDasharray = String(length);
+    path.style.strokeDashoffset = String(length);
+    path.getBoundingClientRect(); // force reflow before starting the transition
+    path.style.transition = `stroke-dashoffset ${TRACE_MS}ms ease-in-out`;
+
+    const raf = requestAnimationFrame(() => {
+      path.style.strokeDashoffset = '0';
+    });
+
+    const t1 = setTimeout(() => setPhase('fill'), TRACE_MS);
+    const t2 = setTimeout(() => {
+      setPhase('hide');
+      if (!calledRef.current) {
+        calledRef.current = true;
+        onComplete();
+      }
+    }, TRACE_MS + FILL_MS + HOLD_MS);
+    const t3 = setTimeout(() => setPhase('done'), TRACE_MS + FILL_MS + HOLD_MS + FADE_MS);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
+  }, [onComplete]);
+
+  if (skip || phase === 'done') return null;
+
+  return (
+    <div
+      className={`fixed inset-0 z-[100] bg-ink flex items-center justify-center transition-opacity duration-500 ${
+        phase === 'hide' ? 'opacity-0 pointer-events-none' : 'opacity-100'
+      }`}
+      aria-hidden="true"
+    >
+      <svg viewBox={EMBLEM_VIEWBOX} className="w-56 sm:w-72" role="presentation">
+        <g transform={EMBLEM_TRANSFORM}>
+          <path
+            ref={pathRef}
+            d={EMBLEM_PATH_D}
+            fill={phase === 'fill' || phase === 'hide' ? '#6E1B2D' : 'none'}
+            stroke="#6E1B2D"
+            strokeWidth="8"
+            style={{ transition: 'fill 0.4s ease-in' }}
+          />
+        </g>
+      </svg>
+    </div>
+  );
+}
+```
+
+- [ ] **Step 2: Verify it compiles**
+
+Run: `npm run build`
+Expected: succeeds. `EmblemLoader` isn't imported anywhere yet, so nothing visually changes — this just confirms no syntax errors.
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add src/components/EmblemLoader.js
+git commit -m "Add EmblemLoader trace-in loading animation component"
+```
+
+---
+
+### Task 4: Wire everything into Home.js
+
+**Files:**
+- Modify: `src/pages/Home.js` (full rewrite)
+
+**Interfaces:**
+- Consumes: `<EmblemLoader onComplete />` (Task 3), `EMBLEM_PATH_D`/etc indirectly via EmblemLoader only (Home.js does not import emblemPath directly), the 4 photo files from Task 2 (`why-angels-1.jpg`, `why-angels-2.jpg`, `why-angels-3.jpg`, `home-band.jpg`), and all existing round-2 exports (`useScrollReveal`, `StatNumber`, `.card-cut`, `.divider-cut`, `.rule-cut`, `.reveal`/`.is-visible`).
+
+- [ ] **Step 1: Replace `src/pages/Home.js`**
+
+```jsx
+import React, { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useScrollReveal from '../hooks/useScrollReveal';
+import StatNumber from '../components/StatNumber';
+import EmblemLoader from '../components/EmblemLoader';
+
+const stats = [
+  { num: '15+', label: 'Years Strong', sub: 'Proven since 2010' },
+  { num: '7', label: 'Master Coaches', sub: 'USAV Certified' },
+  { num: '3', label: 'Program Levels', sub: 'Club, Hybrid, Academy' },
+  { num: '✓', label: 'USAV Sanctioned', sub: 'Sun Country Region' },
+];
+
+const whyAngels = [
+  { image: 'why-angels-1.jpg', title: 'Expert Coaching', desc: 'Master coaches with decades of combined experience, certifications, and a track record of developing collegiate athletes.' },
+  { image: 'why-angels-2.jpg', title: 'Proven Results', desc: '15 years of developing athletes who succeed at the collegiate level and beyond. Our alumni speak for themselves.' },
+  { image: 'why-angels-3.jpg', title: 'Better Value', desc: 'Top-tier training at significantly lower costs than competing clubs. More money in your pocket, same excellence on court.' },
+];
+
+export default function Home() {
+  const navigate = useNavigate();
+  const [statsRef, statsVisible] = useScrollReveal();
+  const [whyRef, whyVisible] = useScrollReveal();
+  const [introDone, setIntroDone] = useState(false);
+  const handleIntroComplete = useCallback(() => setIntroDone(true), []);
+
+  return (
+    <div>
+      <EmblemLoader onComplete={handleIntroComplete} />
+
+      <section className="relative overflow-hidden bg-ink pt-32 pb-24 px-6">
+        <img
+          src={`${process.env.PUBLIC_URL}/emblem.png`}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none select-none absolute -right-24 -top-24 w-[420px] max-w-none opacity-10"
+          width="420"
+          height="257"
+        />
+        <div
+          className={`absolute left-0 right-0 bottom-0 h-2/5 bg-gradient-to-r from-maroon to-maroon-dark [clip-path:polygon(0_40%,100%_0%,100%_100%,0%_100%)] ${introDone ? 'animate-sweep-in' : ''}`}
+          aria-hidden="true"
+        />
+
+        <div className="relative max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h1 className={`font-display text-6xl font-bold text-white tracking-tight mb-2 uppercase ${introDone ? 'animate-fade-up' : ''}`}>Angels</h1>
+            <div className={`h-1.5 w-32 bg-maroon-light mb-6 rule-cut ${introDone ? 'animate-fade-up-1' : ''}`} />
+            <p className={`text-xl text-white/90 mb-8 max-w-md leading-relaxed font-medium ${introDone ? 'animate-fade-up-1' : ''}`}>
+              Developing elite athletes. Building champions. Albuquerque's trusted volleyball program since 2010.
+            </p>
+            <div className={`flex gap-4 flex-wrap ${introDone ? 'animate-fade-up-2' : ''}`}>
+              <button
+                onClick={() => navigate('/tryouts')}
+                className="bg-maroon hover:bg-maroon-light text-white hover:text-ink font-bold px-8 py-3 shadow-lg transition-colors"
+              >
+                2026 Tryouts
+              </button>
+              <button
+                onClick={() => navigate('/programs')}
+                className="border-2 border-white text-white font-bold px-8 py-3 hover:bg-white/10 transition-colors"
+              >
+                View Programs
+              </button>
+            </div>
+          </div>
+          <div ref={statsRef} className="grid grid-cols-2 gap-6">
+            {stats.map((stat, i) => (
+              <div
+                key={i}
+                className={`card-cut bg-maroon-dark p-6 reveal ${statsVisible ? 'is-visible' : ''}`}
+              >
+                <div className="text-5xl font-bold mb-2">
+                  {stat.num === '✓' ? (
+                    <span className="text-maroon-light">✓</span>
+                  ) : (
+                    <span className="text-white">
+                      <StatNumber value={stat.num} active={statsVisible} />
+                    </span>
+                  )}
+                </div>
+                <p className="text-white font-bold text-sm">{stat.label}</p>
+                <p className="text-white/60 text-xs mt-2">{stat.sub}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="divider-cut bg-paper" aria-hidden="true" />
+      </section>
+
+      <section className="bg-paper py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div ref={whyRef} className={`reveal ${whyVisible ? 'is-visible' : ''}`}>
+            <div className="mb-16">
+              <h2 className="font-display text-5xl font-bold text-ink mb-4 uppercase tracking-tight">Why Angels?</h2>
+              <div className="h-1 w-20 bg-maroon rule-cut" />
+            </div>
+            <p className="text-xl text-ink/70 mb-16 max-w-2xl leading-relaxed">
+              We're not just another volleyball club. We're a legacy built on proven coaching, competitive results, and genuine care for our athletes.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {whyAngels.map((item, i) => (
+                <div key={i} className="card-cut bg-white overflow-hidden">
+                  <img
+                    src={`${process.env.PUBLIC_URL}/photos/${item.image}`}
+                    alt=""
+                    className="w-full h-44 object-cover"
+                  />
+                  <div className="p-6">
+                    <h3 className="font-display text-2xl font-bold text-ink mb-3 uppercase">{item.title}</h3>
+                    <p className="text-ink/70 leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative h-64 sm:h-80 md:h-96 overflow-hidden">
+        <img
+          src={`${process.env.PUBLIC_URL}/photos/home-band.jpg`}
+          alt="Angels players in action"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-ink/80" />
+        <div className="divider-cut bg-ink" aria-hidden="true" />
+      </section>
+    </div>
+  );
+}
+```
+
+- [ ] **Step 2: Verify**
+
+```bash
+npm start
+```
+
+Open http://localhost:3000/ in a **fresh/private browser window** (so sessionStorage is empty) and confirm: a full-screen dark overlay appears immediately showing the emblem outline tracing itself in maroon (~1.8s), then filling solid, then fading away while the hero's band-sweep and headline/tagline/button stagger animate in underneath — a continuous hand-off, not a hard cut. Scroll down and confirm the "Why Angels?" cards now show real photos (not icons) with diagonal-cut corners, the "USAV Sanctioned" checkmark is maroon (not green), and the stat cards are solid maroon-dark (not frosted glass). Scroll further and confirm the new full-width photo band appears before the footer with a clean diagonal cut into it.
+
+Then reload the page **in the same window** (sessionStorage now has the flag) and confirm the loader is skipped entirely — the hero animation still plays (band sweep, headline stagger) but with no trace/loader overlay first.
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add src/pages/Home.js
+git commit -m "Wire loading animation, photos, and branded shapes into Home page"
+```
+
+---
+
+### Task 5: Full verification pass
+
+**Files:** None modified — verification only.
+
+- [ ] **Step 1: Production build**
+
+```bash
+CI=true npm run build
+```
+
+Expected: succeeds with no errors.
+
+- [ ] **Step 2: Real-browser verification of all 3 loader states**
+
+Using Playwright (install into a scratch directory outside the repo if not already available, per the pattern used in rounds 1-2), verify each of these independently, taking a screenshot for each:
+
+1. **First visit** (fresh browser context, no sessionStorage): navigate to Home, wait ~3s, confirm the loader played and the hero is now visible in its settled state. Check the browser console for errors — should be none.
+2. **Repeat visit** (same context, navigate away to another page and back to Home, or reload): confirm the loader does NOT reappear, and the hero animation still plays normally.
+3. **Reduced motion** (`page.emulateMedia({ reducedMotion: 'reduce' })`, fresh context): confirm the loader never appears at all and the hero is immediately visible in its final state — no trace, no delay.
+
+- [ ] **Step 3: Visual check of the rest of the page**
+
+Scroll through the full page (desktop and mobile widths) and confirm: all 3 "Why Angels" photos load correctly and are diagonally cut, the checkmark stat is maroon, all 4 stat cards are solid maroon-dark (not glassy), the new photo band renders with a clean diagonal transition into the footer, and all original copy (headline, tagline, both buttons, all stat labels, all 3 card titles/descriptions) is present and unchanged.
+
+- [ ] **Step 4: Fix anything found**
+
+If the hand-off timing looks off, an image fails to load, or a seam looks wrong, adjust the relevant value (the `TRACE_MS`/`FILL_MS`/etc constants in `EmblemLoader.js`, a crop box in `generate-home-photos.py`, etc.) and re-verify. This is expected minor tuning, not a sign the approach is wrong.
+
+- [ ] **Step 5: Final `git status` check**
+
+```bash
+git status -s
+```
+
+Expected: clean — everything already committed task-by-task.
+
+- [ ] **Step 6: Report back to the user**
+
+Summarize what changed. Remind them nothing is pushed or deployed live yet — those remain separate, explicit decisions (same as rounds 1-2).
