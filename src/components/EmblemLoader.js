@@ -1,42 +1,71 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { EMBLEM_PATH_D, EMBLEM_VIEWBOX, EMBLEM_TRANSFORM } from '../data/emblemPath';
+import shouldSkipIntro, { INTRO_SESSION_KEY as SESSION_KEY } from '../utils/introSkip';
 
-const SESSION_KEY = 'angels-intro-played';
 const TRACE_MS = 1800;
 const FILL_MS = 400;
 const HOLD_MS = 300;
 const FADE_MS = 500;
 
+// Fraction of TRACE_MS spent handing off from the first subpath to the last.
+// The remainder is how long any single subpath takes to draw itself.
+const STAGGER_SPAN = 0.6;
+
 export default function EmblemLoader({ onComplete }) {
-  const pathRef = useRef(null);
+  // SVG restarts stroke-dasharray at every `M`, so a single <path> holding all
+  // 31 subpaths cannot be traced — every subpath would draw at once. Split it.
+  const subpaths = useMemo(
+    () => EMBLEM_PATH_D.split(/(?=M)/).filter((s) => s.trim()),
+    []
+  );
+  const pathRefs = useRef([]);
   const [phase, setPhase] = useState('trace');
-  const [skip, setSkip] = useState(false);
+  // Decided during render (not in an effect) so a skipped intro never paints
+  // the opaque overlay for a frame.
+  const [skip] = useState(shouldSkipIntro);
   const calledRef = useRef(false);
 
   useEffect(() => {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const alreadyPlayed = sessionStorage.getItem(SESSION_KEY);
-
-    if (prefersReduced || alreadyPlayed) {
-      setSkip(true);
+    if (skip) {
       if (!calledRef.current) {
         calledRef.current = true;
         onComplete();
       }
-      return;
+      return undefined;
     }
 
-    sessionStorage.setItem(SESSION_KEY, '1');
+    try {
+      window.sessionStorage.setItem(SESSION_KEY, '1');
+    } catch {
+      // Writes can be blocked even when reads succeed — the intro still plays.
+    }
 
-    const path = pathRef.current;
-    const length = path.getTotalLength();
-    path.style.strokeDasharray = String(length);
-    path.style.strokeDashoffset = String(length);
-    path.getBoundingClientRect(); // force reflow before starting the transition
-    path.style.transition = `stroke-dashoffset ${TRACE_MS}ms ease-in-out`;
+    const paths = pathRefs.current.filter(Boolean);
+
+    // Sweep left-to-right: order the subpaths by their horizontal position.
+    const order = paths
+      .map((p) => ({ p, x: p.getBBox().x }))
+      .sort((a, b) => a.x - b.x)
+      .map((entry) => entry.p);
+
+    order.forEach((p) => {
+      const length = p.getTotalLength();
+      p.style.strokeDasharray = String(length);
+      p.style.strokeDashoffset = String(length);
+    });
+    order[0]?.getBoundingClientRect(); // force reflow before starting transitions
+
+    const staggerTotal = TRACE_MS * STAGGER_SPAN;
+    const step = order.length > 1 ? staggerTotal / (order.length - 1) : 0;
+    const drawMs = TRACE_MS - staggerTotal;
+    order.forEach((p, i) => {
+      p.style.transition = `stroke-dashoffset ${drawMs}ms ease-in-out ${Math.round(i * step)}ms`;
+    });
 
     const raf = requestAnimationFrame(() => {
-      path.style.strokeDashoffset = '0';
+      order.forEach((p) => {
+        p.style.strokeDashoffset = '0';
+      });
     });
 
     const t1 = setTimeout(() => setPhase('fill'), TRACE_MS);
@@ -55,9 +84,11 @@ export default function EmblemLoader({ onComplete }) {
       clearTimeout(t2);
       clearTimeout(t3);
     };
-  }, [onComplete]);
+  }, [onComplete, skip]);
 
   if (skip || phase === 'done') return null;
+
+  const filled = phase === 'fill' || phase === 'hide';
 
   return (
     <div
@@ -68,16 +99,30 @@ export default function EmblemLoader({ onComplete }) {
     >
       <svg viewBox={EMBLEM_VIEWBOX} className="w-56 sm:w-72" role="presentation">
         <g transform={EMBLEM_TRANSFORM}>
+          {/* Fill uses the combined path so counters/holes still punch out
+              correctly under the nonzero fill rule. */}
           <path
-            ref={pathRef}
             d={EMBLEM_PATH_D}
-            fill={phase === 'fill' || phase === 'hide' ? '#6E1B2D' : 'none'}
-            stroke="#D98499"
-            strokeWidth="32"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            style={{ transition: 'fill 0.4s ease-in' }}
+            fill={filled ? '#6E1B2D' : 'none'}
+            stroke="none"
+            style={{ transition: `fill ${FILL_MS}ms ease-in` }}
           />
+          {subpaths.map((d, i) => (
+            <path
+              key={i}
+              ref={(el) => {
+                pathRefs.current[i] = el;
+              }}
+              d={d}
+              fill="none"
+              stroke="#D98499"
+              // The group is scaled 0.1x, so strokeWidth is divided by 10 too:
+              // 320 renders as 32 viewBox units ≈ 2.8px on screen at desktop.
+              strokeWidth="320"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          ))}
         </g>
       </svg>
     </div>
