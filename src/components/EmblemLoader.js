@@ -7,6 +7,14 @@ const FILL_MS = 400;
 const HOLD_MS = 300;
 const FADE_MS = 500;
 
+// The traced silhouette is a single flat color (it was vectorized from just
+// the PNG's alpha channel, so it never had the real logo's color/line detail
+// to work with). Once it's filled solid, crossfade in the real raster
+// emblem.png on top of it so the animation resolves into the actual logo
+// instead of staying a plain maroon shape.
+const REVEAL_DELAY_MS = FILL_MS;
+const REVEAL_MS = 250;
+
 // Fraction of TRACE_MS spent handing off from the first subpath to the last.
 // The remainder is how long any single subpath takes to draw itself.
 const STAGGER_SPAN = 0.6;
@@ -97,34 +105,49 @@ export default function EmblemLoader({ onComplete }) {
       }`}
       aria-hidden="true"
     >
-      <svg viewBox={EMBLEM_VIEWBOX} className="w-56 sm:w-72" role="presentation">
-        <g transform={EMBLEM_TRANSFORM}>
-          {/* Fill uses the combined path so counters/holes still punch out
-              correctly under the nonzero fill rule. */}
-          <path
-            d={EMBLEM_PATH_D}
-            fill={filled ? '#6E1B2D' : 'none'}
-            stroke="none"
-            style={{ transition: `fill ${FILL_MS}ms ease-in` }}
-          />
-          {subpaths.map((d, i) => (
+      <div className="relative w-56 sm:w-72">
+        <svg viewBox={EMBLEM_VIEWBOX} className="block w-full h-auto" role="presentation">
+          <g transform={EMBLEM_TRANSFORM}>
+            {/* Fill uses the combined path so counters/holes still punch out
+                correctly under the nonzero fill rule. */}
             <path
-              key={i}
-              ref={(el) => {
-                pathRefs.current[i] = el;
-              }}
-              d={d}
-              fill="none"
-              stroke="#D98499"
-              // The group is scaled 0.1x, so strokeWidth is divided by 10 too:
-              // 320 renders as 32 viewBox units ≈ 2.8px on screen at desktop.
-              strokeWidth="320"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              d={EMBLEM_PATH_D}
+              fill={filled ? '#6E1B2D' : 'none'}
+              stroke="none"
+              style={{ transition: `fill ${FILL_MS}ms ease-in` }}
             />
-          ))}
-        </g>
-      </svg>
+            {subpaths.map((d, i) => (
+              <path
+                key={i}
+                ref={(el) => {
+                  pathRefs.current[i] = el;
+                }}
+                d={d}
+                fill="none"
+                stroke="#D98499"
+                // The group is scaled 0.1x, so strokeWidth is divided by 10 too:
+                // 320 renders as 32 viewBox units ≈ 2.8px on screen at desktop.
+                strokeWidth="320"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            ))}
+          </g>
+        </svg>
+        {/* Rendered from mount (not just once filled) so the browser has the
+            full ~1.8s trace phase to fetch/decode it before it's needed. */}
+        <img
+          src={`${process.env.PUBLIC_URL}/emblem.png`}
+          alt=""
+          className={`absolute inset-0 w-full h-full object-contain transition-opacity ease-in ${
+            filled ? 'opacity-100' : 'opacity-0'
+          }`}
+          style={{
+            transitionDuration: `${REVEAL_MS}ms`,
+            transitionDelay: filled ? `${REVEAL_DELAY_MS}ms` : '0ms',
+          }}
+        />
+      </div>
     </div>
   );
 }
