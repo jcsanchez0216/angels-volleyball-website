@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import useScrollReveal from '../hooks/useScrollReveal';
 
 const programs = [
@@ -17,6 +18,7 @@ const included = [
 ];
 
 export default function Programs() {
+  const navigate = useNavigate();
   const [headRef, headVisible] = useScrollReveal();
   const [cardsRef, cardsVisible] = useScrollReveal();
   const [includedRef, includedVisible] = useScrollReveal();
@@ -46,6 +48,14 @@ export default function Programs() {
               <div className="p-8">
                 <p className="text-ink/80 leading-relaxed mb-4 font-medium">{prog.description}</p>
                 <p className="text-ink/70 text-sm leading-relaxed">{prog.details}</p>
+                {prog.name === 'Hybrid' && (
+                  <button
+                    onClick={() => navigate('/hybrid-schedule')}
+                    className="mt-6 w-full bg-maroon hover:bg-maroon-dark text-white font-bold py-3 text-sm uppercase tracking-wider transition-colors"
+                  >
+                    View Schedule &amp; Payments
+                  </button>
+                )}
               </div>
             </div>
           ))}
