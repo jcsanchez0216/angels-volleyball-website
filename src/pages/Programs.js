@@ -37,7 +37,7 @@ export default function Programs() {
       <section className="relative py-24 px-6 bg-paper">
         <div ref={cardsRef} className={`max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 reveal ${cardsVisible ? 'is-visible' : ''}`}>
           {programs.map((prog, i) => (
-            <div key={i} className="card-cut bg-white overflow-hidden hover:-translate-y-1 transition-transform">
+            <div key={i} className="card-cut bg-taupe-light overflow-hidden hover:-translate-y-1 transition-transform">
               <div className="bg-maroon px-8 py-8 text-white">
                 <h2 className="font-display text-3xl font-bold uppercase">{prog.name}</h2>
                 <div className="text-3xl md:text-4xl font-bold mt-2">{prog.price}</div>

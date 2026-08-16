@@ -121,7 +121,7 @@ export default function Home() {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {whyAngels.map((item, i) => (
-                <div key={i} className="card-cut bg-white overflow-hidden">
+                <div key={i} className="card-cut bg-taupe-light overflow-hidden">
                   <img
                     src={`${process.env.PUBLIC_URL}/photos/${item.image}`}
                     alt=""
