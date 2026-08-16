@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/angels-volleyball-website/static/css/main.d6f34c09.css",
-    "main.js": "/angels-volleyball-website/static/js/main.19149f17.js",
-    "static/js/411.c87b544f.chunk.js": "/angels-volleyball-website/static/js/411.c87b544f.chunk.js",
+    "main.css": "/angels-volleyball-website/static/css/main.aa2e9a88.css",
+    "main.js": "/angels-volleyball-website/static/js/main.f29d8098.js",
+    "static/js/411.1f69d1db.chunk.js": "/angels-volleyball-website/static/js/411.1f69d1db.chunk.js",
     "index.html": "/angels-volleyball-website/index.html",
-    "main.d6f34c09.css.map": "/angels-volleyball-website/static/css/main.d6f34c09.css.map",
-    "main.19149f17.js.map": "/angels-volleyball-website/static/js/main.19149f17.js.map",
-    "411.c87b544f.chunk.js.map": "/angels-volleyball-website/static/js/411.c87b544f.chunk.js.map"
+    "main.aa2e9a88.css.map": "/angels-volleyball-website/static/css/main.aa2e9a88.css.map",
+    "main.f29d8098.js.map": "/angels-volleyball-website/static/js/main.f29d8098.js.map",
+    "411.1f69d1db.chunk.js.map": "/angels-volleyball-website/static/js/411.1f69d1db.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d6f34c09.css",
-    "static/js/main.19149f17.js"
+    "static/css/main.aa2e9a88.css",
+    "static/js/main.f29d8098.js"
   ]
 }
