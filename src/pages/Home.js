@@ -52,7 +52,7 @@ export default function Home() {
           src={`${process.env.PUBLIC_URL}/emblem.png`}
           alt=""
           aria-hidden="true"
-          className="pointer-events-none select-none absolute -right-24 -top-24 w-[420px] max-w-none opacity-10"
+          className="pointer-events-none select-none absolute -right-24 top-4 w-[420px] max-w-none opacity-10"
           width="420"
           height="257"
         />
