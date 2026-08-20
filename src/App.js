@@ -7,6 +7,7 @@ import Coaches from './pages/Coaches';
 import Tryouts from './pages/Tryouts';
 import Contact from './pages/Contact';
 import HybridSchedule from './pages/HybridSchedule';
+import Forms from './pages/Forms';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/tryouts" element={<Tryouts />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/hybrid-schedule" element={<HybridSchedule />} />
+        <Route path="/forms" element={<Forms />} />
       </Routes>
       <Footer />
     </Router>
