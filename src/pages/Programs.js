@@ -5,7 +5,7 @@ import useScrollReveal from '../hooks/useScrollReveal';
 const programs = [
   { name: 'Academy', price: '$20/session', description: 'Perfect for beginners and developing young athletes. Learn fundamentals in a supportive environment.', age: 'Ages 10-14', details: 'Focus on learning the basics, building confidence, and having fun. Great for new players!', path: '/academy', linkLabel: 'Full Details & Schedule' },
   { name: 'Hybrid', price: '$2,700/season', description: 'Competitive training with flexible tournament schedule. Balance development with competition.', age: 'Ages 11-18', details: 'Train hard and compete! Mix of skill development and tournament play throughout the season.', path: '/hybrid-schedule', linkLabel: 'View Schedule & Payments' },
-  { name: 'Club', price: 'Contact for pricing', description: 'Elite competitive program. Multiple tournaments, advanced skill development, college prep.', age: 'Ages 14-18', details: 'Our most competitive program. Designed for serious athletes aiming for college recruitment.', path: '/club-teams', linkLabel: 'View Schedules & Cost' },
+  { name: 'Club', price: '', description: 'Elite competitive program. Multiple tournaments, advanced skill development, college prep.', age: 'Ages 14-18', details: 'Our most competitive program. Designed for serious athletes aiming for college recruitment.', path: '/club-teams', linkLabel: 'View Schedules & Cost' },
 ];
 
 const included = [
@@ -42,7 +42,7 @@ export default function Programs() {
             <div key={i} className="card-cut bg-taupe-light overflow-hidden hover:-translate-y-1 transition-transform">
               <div className="bg-maroon px-8 py-8 text-white">
                 <h2 className="font-display text-3xl font-bold uppercase">{prog.name}</h2>
-                <div className="text-3xl md:text-4xl font-bold mt-2">{prog.price}</div>
+                {prog.price && <div className="text-3xl md:text-4xl font-bold mt-2">{prog.price}</div>}
                 <p className="text-xs font-bold text-white/80 uppercase tracking-wider mt-3">{prog.age}</p>
               </div>
               <div className="p-8">

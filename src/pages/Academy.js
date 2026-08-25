@@ -56,15 +56,10 @@ export default function Academy() {
             <p className="text-2xl font-bold text-ink mb-1">Tue &amp; Thu, 5:30-7:00 PM</p>
             <p className="text-ink/70 text-sm">Starting Tuesday, August 25, 2026.</p>
           </div>
-          <div className="card-cut bg-white p-8">
+          <div className="card-cut bg-white p-8 sm:col-span-2">
             <p className="text-xs font-bold text-maroon uppercase tracking-wider mb-2">Location</p>
             <p className="text-2xl font-bold text-ink mb-1">LBJ Middle School</p>
             <p className="text-ink/70 text-sm">Auxiliary gym, northwest side.</p>
-          </div>
-          <div className="card-cut bg-white p-8">
-            <p className="text-xs font-bold text-maroon uppercase tracking-wider mb-2">Open Gym</p>
-            <p className="text-2xl font-bold text-ink mb-1">Free, 6:00-7:00 PM</p>
-            <p className="text-ink/70 text-sm">Open to all Academy athletes.</p>
           </div>
         </div>
         <div className="divider-cut bg-ink" aria-hidden="true" />
