@@ -57,7 +57,7 @@ export default function Home() {
           height="257"
         />
         <div
-          className={`absolute left-0 right-0 bottom-0 h-2/5 bg-gradient-to-r from-maroon to-maroon-dark [clip-path:polygon(0_40%,100%_0%,100%_100%,0%_100%)] ${introDone ? 'animate-sweep-in' : ''}`}
+          className={`absolute left-0 right-0 bottom-0 h-2/5 bg-gradient-to-r from-maroon via-maroon-dark to-ink [clip-path:polygon(0_40%,100%_0%,100%_100%,0%_100%)] ${introDone ? 'animate-sweep-in' : ''}`}
           aria-hidden="true"
         />
 
@@ -81,7 +81,7 @@ export default function Home() {
             {stats.map((stat, i) => (
               <div
                 key={i}
-                className={`card-cut bg-maroon-dark border border-maroon-light/30 p-6 reveal ${introDone && statsVisible ? 'is-visible' : ''}`}
+                className={`card-cut bg-maroon-dark border border-maroon-light/40 p-6 reveal ${introDone && statsVisible ? 'is-visible' : ''}`}
                 aria-label={`${stat.num} ${stat.label}`}
               >
                 <div className="text-5xl font-bold mb-2">
