@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import useScrollReveal from '../hooks/useScrollReveal';
 
 const programs = [
-  { name: 'Academy', price: '$20/session', description: 'Perfect for beginners and developing young athletes. Learn fundamentals in a supportive environment.', age: 'Ages 10-14', details: 'Focus on learning the basics, building confidence, and having fun. Great for new players!' },
-  { name: 'Hybrid', price: '$2,700/season', description: 'Competitive training with flexible tournament schedule. Balance development with competition.', age: 'Ages 11-18', details: 'Train hard and compete! Mix of skill development and tournament play throughout the season.' },
-  { name: 'Club', price: 'Contact for pricing', description: 'Elite competitive program. Multiple tournaments, advanced skill development, college prep.', age: 'Ages 14-18', details: 'Our most competitive program. Designed for serious athletes aiming for college recruitment.' },
+  { name: 'Academy', price: '$20/session', description: 'Perfect for beginners and developing young athletes. Learn fundamentals in a supportive environment.', age: 'Ages 10-14', details: 'Focus on learning the basics, building confidence, and having fun. Great for new players!', path: '/academy', linkLabel: 'Full Details & Schedule' },
+  { name: 'Hybrid', price: '$2,700/season', description: 'Competitive training with flexible tournament schedule. Balance development with competition.', age: 'Ages 11-18', details: 'Train hard and compete! Mix of skill development and tournament play throughout the season.', path: '/hybrid-schedule', linkLabel: 'View Schedule & Payments' },
+  { name: 'Club', price: 'Contact for pricing', description: 'Elite competitive program. Multiple tournaments, advanced skill development, college prep.', age: 'Ages 14-18', details: 'Our most competitive program. Designed for serious athletes aiming for college recruitment.', path: '/club-teams', linkLabel: 'View Schedules & Cost' },
 ];
 
 const included = [
@@ -48,14 +48,12 @@ export default function Programs() {
               <div className="p-8">
                 <p className="text-ink/80 leading-relaxed mb-4 font-medium">{prog.description}</p>
                 <p className="text-ink/70 text-sm leading-relaxed">{prog.details}</p>
-                {prog.name === 'Hybrid' && (
-                  <button
-                    onClick={() => navigate('/hybrid-schedule')}
-                    className="mt-6 w-full bg-maroon hover:bg-maroon-dark text-white font-bold py-3 text-sm uppercase tracking-wider transition-colors"
-                  >
-                    View Schedule &amp; Payments
-                  </button>
-                )}
+                <button
+                  onClick={() => navigate(prog.path)}
+                  className="mt-6 w-full bg-maroon hover:bg-maroon-dark text-white font-bold py-3 text-sm uppercase tracking-wider transition-colors"
+                >
+                  {prog.linkLabel}
+                </button>
               </div>
             </div>
           ))}

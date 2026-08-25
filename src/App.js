@@ -7,6 +7,8 @@ import Coaches from './pages/Coaches';
 import Contact from './pages/Contact';
 import HybridSchedule from './pages/HybridSchedule';
 import Forms from './pages/Forms';
+import ClubTeams from './pages/ClubTeams';
+import Academy from './pages/Academy';
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/hybrid-schedule" element={<HybridSchedule />} />
         <Route path="/forms" element={<Forms />} />
+        <Route path="/club-teams" element={<ClubTeams />} />
+        <Route path="/academy" element={<Academy />} />
       </Routes>
       <Footer />
     </Router>
