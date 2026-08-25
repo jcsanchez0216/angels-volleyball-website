@@ -86,7 +86,11 @@ export default function Home() {
               >
                 <div className="text-5xl font-bold mb-2">
                   {stat.num === '✓' ? (
-                    <span className="text-maroon-light">✓</span>
+                    <img
+                      src={`${process.env.PUBLIC_URL}/usav-logo.png`}
+                      alt="USA Volleyball"
+                      className="w-12 h-12"
+                    />
                   ) : (
                     <span className="text-white">
                       <StatNumber value={stat.num} active={introDone && statsVisible} />
