@@ -71,7 +71,7 @@ export default function Home() {
             <div className={`flex gap-4 flex-wrap ${introDone ? 'animate-fade-up-2' : ''}`}>
               <button
                 onClick={() => navigate('/programs')}
-                className="bg-maroon hover:bg-maroon-light text-white hover:text-ink font-bold px-8 py-3 shadow-lg transition-colors"
+                className="bg-maroon-light hover:bg-white text-ink font-bold px-8 py-3 shadow-lg transition-colors"
               >
                 View Programs
               </button>
@@ -81,7 +81,7 @@ export default function Home() {
             {stats.map((stat, i) => (
               <div
                 key={i}
-                className={`card-cut bg-maroon-dark p-6 reveal ${introDone && statsVisible ? 'is-visible' : ''}`}
+                className={`card-cut bg-maroon-dark border border-maroon-light/30 p-6 reveal ${introDone && statsVisible ? 'is-visible' : ''}`}
                 aria-label={`${stat.num} ${stat.label}`}
               >
                 <div className="text-5xl font-bold mb-2">
