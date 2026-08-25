@@ -70,14 +70,8 @@ export default function Home() {
             </p>
             <div className={`flex gap-4 flex-wrap ${introDone ? 'animate-fade-up-2' : ''}`}>
               <button
-                onClick={() => navigate('/tryouts')}
-                className="bg-maroon hover:bg-maroon-light text-white hover:text-ink font-bold px-8 py-3 shadow-lg transition-colors"
-              >
-                2026 Tryouts
-              </button>
-              <button
                 onClick={() => navigate('/programs')}
-                className="border-2 border-white text-white font-bold px-8 py-3 hover:bg-white/10 transition-colors"
+                className="bg-maroon hover:bg-maroon-light text-white hover:text-ink font-bold px-8 py-3 shadow-lg transition-colors"
               >
                 View Programs
               </button>
