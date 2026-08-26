@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useScrollReveal from '../hooks/useScrollReveal';
+import ProgramSubNav from '../components/ProgramSubNav';
 
 const nationalSchedule = [
   {
@@ -86,6 +87,7 @@ export default function ClubTeams() {
 
   return (
     <div className="pt-20 bg-paper">
+      <ProgramSubNav />
       <section className="relative pt-24 pb-20 px-6 bg-ink text-center">
         <div ref={headRef} className={`max-w-7xl mx-auto reveal ${headVisible ? 'is-visible' : ''}`}>
           <h1 className="font-display text-5xl font-bold text-white mb-6 uppercase tracking-tight">Club Teams</h1>
@@ -93,10 +95,19 @@ export default function ClubTeams() {
             USA Volleyball Junior Olympic teams competing at the National, Regional, and Local level. Practices tentatively set for Tuesdays and Thursdays — times and locations TBD.
           </p>
         </div>
-        <div className="divider-cut bg-paper" aria-hidden="true" />
+        <div className="divider-cut bg-taupe-light" aria-hidden="true" />
       </section>
 
-      <section className="relative py-24 px-6 bg-paper">
+      <div className="bg-taupe-light border-b border-taupe px-6 py-3">
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm">
+          <span className="text-ink/50 uppercase tracking-wider font-bold text-xs">Jump to</span>
+          <a href="#national" className="font-bold text-maroon uppercase tracking-wider hover:text-maroon-dark transition-colors">National</a>
+          <a href="#regional" className="font-bold text-maroon uppercase tracking-wider hover:text-maroon-dark transition-colors">Regional</a>
+          <a href="#local" className="font-bold text-maroon uppercase tracking-wider hover:text-maroon-dark transition-colors">Local</a>
+        </div>
+      </div>
+
+      <section id="national" className="relative py-24 px-6 bg-paper scroll-mt-20">
         <div ref={nationalRef} className={`max-w-4xl mx-auto reveal ${nationalVisible ? 'is-visible' : ''}`}>
           <h2 className="font-display text-4xl font-bold text-ink mb-4 text-center uppercase tracking-tight">National</h2>
           <div className="h-1 w-20 bg-maroon mx-auto mb-16 rule-cut" />
@@ -137,7 +148,7 @@ export default function ClubTeams() {
         <div className="divider-cut bg-taupe-light" aria-hidden="true" />
       </section>
 
-      <section className="relative py-24 px-6 bg-taupe-light">
+      <section id="regional" className="relative py-24 px-6 bg-taupe-light scroll-mt-20">
         <div ref={regionalRef} className={`max-w-4xl mx-auto reveal ${regionalVisible ? 'is-visible' : ''}`}>
           <h2 className="font-display text-4xl font-bold text-ink mb-4 text-center uppercase tracking-tight">Regional</h2>
           <div className="h-1 w-20 bg-maroon mx-auto mb-16 rule-cut" />
@@ -146,7 +157,7 @@ export default function ClubTeams() {
         <div className="divider-cut bg-paper" aria-hidden="true" />
       </section>
 
-      <section className="relative py-24 px-6 bg-paper">
+      <section id="local" className="relative py-24 px-6 bg-paper scroll-mt-20">
         <div ref={localRef} className={`max-w-4xl mx-auto reveal ${localVisible ? 'is-visible' : ''}`}>
           <h2 className="font-display text-4xl font-bold text-ink mb-4 text-center uppercase tracking-tight">Local</h2>
           <div className="h-1 w-20 bg-maroon mx-auto mb-16 rule-cut" />

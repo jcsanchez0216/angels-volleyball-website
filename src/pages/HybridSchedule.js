@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useScrollReveal from '../hooks/useScrollReveal';
+import ProgramSubNav from '../components/ProgramSubNav';
 
 const schedule = [
   {
@@ -60,6 +61,7 @@ export default function HybridSchedule() {
 
   return (
     <div className="pt-20 bg-paper">
+      <ProgramSubNav />
       <section className="relative pt-24 pb-20 px-6 bg-ink text-center">
         <div ref={headRef} className={`max-w-7xl mx-auto reveal ${headVisible ? 'is-visible' : ''}`}>
           <h1 className="font-display text-5xl font-bold text-white mb-6 uppercase tracking-tight">Hybrid Program Schedule</h1>
