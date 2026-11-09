@@ -3,11 +3,12 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
 const links = [
-  { to: '/', label: 'Home' },
-  { to: '/programs', label: 'Programs' },
-  { to: '/coaches', label: 'Coaches' },
-  { to: '/forms', label: 'Forms' },
-  { to: '/contact', label: 'Contact' },
+  { to: '/', label: 'Home', match: ['/'] },
+  { to: '/club-teams', label: 'Club Teams', match: ['/club-teams'] },
+  { to: '/hybrid-schedule', label: 'Hybrid Program', match: ['/hybrid-schedule', '/hybrid-program'] },
+  { to: '/academy', label: 'Academy Program', match: ['/academy', '/academy-program'] },
+  { to: '/forms', label: 'Parent Forms', match: ['/forms', '/parent-forms'] },
+  { to: '/coaches', label: '2026-2027 Coaching Staff', match: ['/coaches', '/2026-2027-coaching-staff'] },
 ];
 
 export default function Navigation() {
@@ -17,19 +18,19 @@ export default function Navigation() {
   return (
     <nav className="fixed w-full bg-ink z-50 shadow-lg border-b-2 border-maroon-light">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex justify-between items-center h-20">
-          <Link to="/" className="block" onClick={() => setMobileMenuOpen(false)}>
+        <div className="flex justify-between items-center gap-4 min-h-20 py-3">
+          <Link to="/" className="block shrink-0" onClick={() => setMobileMenuOpen(false)}>
             <img src={`${process.env.PUBLIC_URL}/wordmark.png`} alt="Angels of Albuquerque Volleyball" className="h-14 w-auto" width="114" height="56" />
           </Link>
 
-          <div className="hidden md:flex gap-8 items-center">
-            {links.map(link => {
-              const active = location.pathname === link.to;
+          <div className="hidden lg:flex flex-wrap justify-end gap-x-5 gap-y-2 items-center">
+            {links.map((link) => {
+              const active = link.match.includes(location.pathname);
               return (
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`text-sm font-bold uppercase tracking-wider pb-1 border-b-2 transition-colors ${
+                  className={`text-xs font-bold uppercase tracking-wider pb-1 border-b-2 transition-colors ${
                     active ? 'text-maroon-light border-maroon-light' : 'text-white border-transparent hover:text-maroon-light'
                   }`}
                 >
@@ -41,7 +42,7 @@ export default function Navigation() {
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-white p-2"
+            className="lg:hidden text-white p-2"
             aria-label="Toggle menu"
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-menu"
@@ -52,8 +53,8 @@ export default function Navigation() {
       </div>
 
       {mobileMenuOpen && (
-        <div id="mobile-menu" className="md:hidden bg-ink border-t border-maroon-light px-6 py-4">
-          {links.map(link => (
+        <div id="mobile-menu" className="lg:hidden bg-ink border-t border-maroon-light px-6 py-4">
+          {links.map((link) => (
             <Link
               key={link.to}
               to={link.to}

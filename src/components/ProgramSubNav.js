@@ -2,9 +2,9 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 const links = [
-  { to: '/academy', label: 'Academy' },
-  { to: '/hybrid-schedule', label: 'Hybrid' },
-  { to: '/club-teams', label: 'Club' },
+  { to: '/academy', label: 'Academy', match: ['/academy', '/academy-program'] },
+  { to: '/hybrid-schedule', label: 'Hybrid', match: ['/hybrid-schedule', '/hybrid-program'] },
+  { to: '/club-teams', label: 'Club', match: ['/club-teams'] },
 ];
 
 export default function ProgramSubNav() {
@@ -15,7 +15,7 @@ export default function ProgramSubNav() {
       <div className="max-w-7xl mx-auto flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
         <span className="text-white/50 uppercase tracking-wider font-bold text-xs">Programs</span>
         {links.map((link) => {
-          const active = location.pathname === link.to;
+          const active = link.match.includes(location.pathname);
           return (
             <Link
               key={link.to}

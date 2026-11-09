@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Home from './pages/Home';
 import Programs from './pages/Programs';
@@ -23,6 +23,10 @@ function App() {
         <Route path="/forms" element={<Forms />} />
         <Route path="/club-teams" element={<ClubTeams />} />
         <Route path="/academy" element={<Academy />} />
+        <Route path="/hybrid-program" element={<HybridSchedule />} />
+        <Route path="/academy-program" element={<Academy />} />
+        <Route path="/parent-forms" element={<Forms />} />
+        <Route path="/2026-2027-coaching-staff" element={<Coaches />} />
       </Routes>
       <Footer />
     </Router>
@@ -34,8 +38,13 @@ function Footer() {
     <footer className="bg-ink text-taupe py-12 px-6">
       <div className="max-w-7xl mx-auto border-t border-white/10 pt-8 flex flex-col items-center gap-4 text-center">
         <img src={`${process.env.PUBLIC_URL}/wordmark.png`} alt="" className="h-10 w-auto opacity-90" width="81" height="40" />
-        <p className="text-sm text-white/70">&copy; 2026 Angels of Albuquerque Volleyball Club. A 501(c)(3) nonprofit organization. All rights reserved.</p>
-        <p className="text-xs text-taupe">USAV Sanctioned • Sun Country Region • Albuquerque, New Mexico</p>
+        <p className="text-sm text-white/70">&copy; 2026 Angels of Albuquerque Volleyball Club. A nonprofit organization. All rights reserved.</p>
+        <p className="text-xs text-taupe">Member of SURVA, the Sun Country Region of USA Volleyball · Albuquerque, New Mexico</p>
+        <p className="text-xs text-taupe">
+          <a href="mailto:angelsofalbuquerque@hotmail.com" className="text-maroon-light hover:text-white">angelsofalbuquerque@hotmail.com</a>
+          <span className="mx-2">·</span>
+          <Link to="/contact" className="text-maroon-light hover:text-white">Leadership contacts</Link>
+        </p>
       </div>
     </footer>
   );
