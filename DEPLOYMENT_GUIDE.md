@@ -47,6 +47,19 @@ Logo and brand images live directly in `public/` (`emblem.png`, `wordmark.png`, 
 
 ---
 
+## Participant agreement email
+
+Academy and Hybrid include the athlete participant agreement. Submissions are meant for Theresa Sanchez. Her address from the 2026-27 handbook, and the form endpoint, live in `src/config/participantForm.js` (override with `.env.local`; see `.env.example`).
+
+GitHub Pages cannot send mail on its own:
+
+1. Create a form at [formspree.io](https://formspree.io) using Theresa’s address.
+2. Confirm the verification email Formspree sends her.
+3. Set `REACT_APP_PARTICIPANT_FORM_ENDPOINT` to the form URL (`https://formspree.io/f/…`) or paste that URL into `endpoint` in `src/config/participantForm.js`.
+4. Run `npm run deploy` again so the production build includes the endpoint.
+
+Until that endpoint is set, the form still displays and shows an error when someone submits. It does not fall back to a `mailto:` link.
+
 ## 🎯 Custom Domain (Later)
 
 To point `angelsofalbuquerque.com` at the site:

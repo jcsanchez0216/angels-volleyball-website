@@ -51,6 +51,9 @@ Because the site lives under a subpath (`/angels-volleyball-website/`) rather th
 - Tailwind CSS with brand design tokens (maroon/ink/paper/taupe)
 - Responsive design across all pages
 - Leadership contact cards, program pricing cards, coach bios
+- Academy and Hybrid athlete participant agreements (email delivery is configured in `src/config/participantForm.js`)
+
+Parent form downloads live in `public/documents/` (handbook, codes of conduct, and the medical release without notary). They are copies of the files from the previous site, so they keep working after the domain moves.
 
 ## Support
 
